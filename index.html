@@ -1,197 +1,261 @@
-<!Doctype HTML>
-<style type="text/CSS">
+<!Doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css.css">
+<title>White Panda</title>
+<script>
+	var flag=false;
 
-nav{
-  position: sticky;
-  top: 0;
-}
-
-div{
-	font-family: arial;
-}
-
-li {
-	float: right;
-	list-style-type: none;
-	background-color: black;
-	padding: 8px 20px;
-}
-
-li a {
-  color: white;
-  font-family: Arial;
-  padding: 8px 25px;
-  text-decoration: none;
-}
-
-a:hover {
-  background-color: #424242;
- }
-
-body{
-	background-repeat: no-repeat;
-}
-
-input{
-	padding: 10px 10px;
-}
-
-.button {
-  background-color: #212121;
-  border: none;
-  color: white;
-  padding: 10px 30px;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.button:hover {
-	background-color: black;
-}
-
-.contact-us{
-    background-image: url('contact-us.png');
-    background-position: center; 
-    background-color: #f5f5f5;
-}
-.about{
-	background-image: url('about.jpg');
-	background-position: center;
-	background-color: #f5f5f5;
-}
-
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  width: 60%;
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-.container {
-  padding: 2px 16px;
-}
-
-</style>
-<script type="text/javascript">
-
-	function submitdata() {
-		var data = '';
-		data += document.getElementById("name").value + ';'
-		data += document.getElementById("email").value + ';'
-		data += document.getElementById("message").value + ';'
-		data += '\r\n';
-		if(data==';;;\r\n')
-			alert('Please enter Complete Data Before submitting');
-		else
-		{
-			alert('Data Saved Sussessfully!');
-			console.log(data);
-			//window.open( "data:application/vnd.ms-excel;charset=utf-8," + encodeURIComponent(data));
-		}
+function openNav() {
+	if (flag==true) {
+		closeNav();
 	}
-</script>
-<head>
-	<TITLE>AR Designs</TITLE>
-<nav>
- <li ><a href="#contact_us">Contact Us</a></li>
- <li ><a href="#about">About</a></li>
- <li ><a href="#home">Home</a></li>
-</nav>
-</head>
+	else{
+		  document.getElementById("mySidenav").style.width = "100px";
+		  document.getElementById("main").style.marginLeft = "100px";
+		  document.getElementById("logo").style.padding="0px";
+		  flag=true;
+	}
+}
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+  document.getElementById("logo").style.paddingLeft="100px";
+  flag=false;
+}
 
-<body background="background.jpg" bgcolor="#f5f5f5">
-	<img src="logo.png" id="home">
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div align="center" id="about" class="about">
-	<br>
-	<h2 align="center" style="font-family: arial; color:black;">ABOUT US</h2>
-	<br>
-	<br>
-	<br>
-	<div class="card">
-  	<img src="about-us.jpg" alt="About-us" style="width:100%">
-  	<div class="container">
-    <p align="center" style="font-family: arial; color: #808080; padding: 20px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <form action="#contact_us"> 
-    <button class="button" >Learn More</button>
-	</form>
-    <br>
-    <br>
-  	</div>
-	</div>    
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+</script>
+<body>
+  <div id="mySidenav" class="sidenav">
+  <p align="center"><a href="#Content Store"><img src="border.svg" class="btnclicked"></a></p>
+  <p align="center"><a href="#search"><img src="search.svg" class="btn"></a></p>
+  <p align="center"><a href="#store"><img src="store.svg" class="btn"></a></p>
+  </div>
+
+  <div class="topnav" id="main">
+  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+  <img src="logo.png" id="logo" width="100px" style="padding-left: 100px; transition: 0.5s;">
+  <div class="topnav-right">
+    <a href="#notifications" class="dropdown"><img src="notification.svg">
+    	<div class="dropdown-content">
+  			<p class="dropitem">No Notifications</p>
+  		</div>
+  	</a>
+    <a href="#account" class="dropdown"><img src="account.png" width="22px">
+    	<div class="dropdown-content">
+  			<p class="dropitem">Account</p>
+  			<p class="dropitem">Orders</p>
+  			<p class="dropitem">Settings</p>
+  		</div>
+    </a>
+    <a ><pre>             </pre></a>
+  </div>
 </div>
 <br>
 <br>
 <br>
-<div align="center" id="contact_us" class="contact-us">
-	<h2 align="center" style="font-family: arial; color:black;">CONTACT US</h2>
+<div class="maincard">
+<div class="container align="center">
+<label align="left" style="font-family: arial; font-size: 32px;">Content Store</label><br>
+<br>
+<br>
+	<div class="smallcard">
+	<label align="left" style="font-family: arial; font-size: 17px; color: #3ebcb3">Got bulk orders or almost similar orders ? Fill the order brief in excel sheet</label>
+	<p style="font-size: 15px; font-family: calibri;">
+		If you're wondering about an easy way to place orders in large numbers, we provide a way customized just for that.<br>
+		Download our Excel Sheet, and fill the order in brief in the prescribed format and submit. In case you need any help,<a href="http://www.whitepanda.in/how_it_works" target="_blank" style="color: #b5b6b6">we <br>are just a click away to assist you in placing your order</a>
+	</p>
+	<form method="get" target="_blank" action="https://docs.google.com/spreadsheets/u/0/">
+	<button class="button" type="submit" style="border-radius: 5px;">
+		<b>Order via excel sheet</b>
+	</button>
+  </form>
+	</div>
 	<br>
-	<br>
-	<br>
-	<br>
-	<form method="post">
-    <input id="name" type="text" name="name" placeholder="Name" size="70"><br>
-    <br>
-	<input id="email" type="email" name="email" placeholder="Email Id" size="70"><br>
-	<br>
-	<textarea id="message" name="subject" placeholder="Message" style="height:200px; width: 39%; font-size: 15px; font-family:Arial;       padding: 10px 10px" ></textarea>
-	<br>
-	<br>
-    <br>
-	<button id="Submit" class="button" onclick="submitdata()">Submit</button>
-	</form>
 	<br>
 </div>
-<br>
-<label style="font-family: Arial; font-size: 12px" >Copyright © 2019 AR Designs - Design: Akshansh Kumar</label>
+
+<div class="row">
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Blog/Article</label></b><br>
+    	<label style="font-size: 12px;">From ₹500</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Newsletter/E-mailer</label></b><br>
+    	<label style="font-size: 12px;">From ₹1000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Whitepaper</label></b><br>
+    	<label style="font-size: 12px;">From ₹2000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">eBook</label></b><br>
+    	<label style="font-size: 12px;">From ₹1000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Report/Guide</label></b><br>
+    	<label style="font-size: 12px;">From ₹1000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Product Description</label></b><br>
+    	<label style="font-size: 12px;">From ₹500</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Website Content</label></b><br>
+    	<label style="font-size: 12px;">From ₹1000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Video Script</label></b><br>
+    	<label style="font-size: 12px;">From ₹1000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Company Profile/Brochure</label></b><br>
+    	<label style="font-size: 12px;">From ₹2000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <div class="card">
+    	<img src="peacock.png" width="100px" style="float: left;">
+    	<br>
+    	<br>
+    	<b><label style="font-size: 14px; color: black;">Press Release</label></b><br>
+    	<label style="font-size: 12px;">From ₹2000</label>
+    	<br>
+    	<br>
+    	<br>
+    	<p align="center" style="font-size: 12px;">Typically 450-400 words, an e-book is <br>perfect for your target audience ranging<br> from prospective customers to users</p>
+    	<br>
+    	<form action="http://business.whitepanda.in/#!/login" target="_blank" method="get">
+    	<button class="button" style="width: 100px">Order</button>
+    	</form>
+    </div>
+  </div>
+</div>
+
+
+</div>
 </body>
-</HTML>
+</html>
