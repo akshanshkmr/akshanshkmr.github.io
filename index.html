@@ -1,0 +1,197 @@
+<!Doctype HTML>
+<style type="text/CSS">
+
+nav{
+  position: sticky;
+  top: 0;
+}
+
+div{
+	font-family: arial;
+}
+
+li {
+	float: right;
+	list-style-type: none;
+	background-color: black;
+	padding: 8px 20px;
+}
+
+li a {
+  color: white;
+  font-family: Arial;
+  padding: 8px 25px;
+  text-decoration: none;
+}
+
+a:hover {
+  background-color: #424242;
+ }
+
+body{
+	background-repeat: no-repeat;
+}
+
+input{
+	padding: 10px 10px;
+}
+
+.button {
+  background-color: #212121;
+  border: none;
+  color: white;
+  padding: 10px 30px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.button:hover {
+	background-color: black;
+}
+
+.contact-us{
+    background-image: url('contact-us.png');
+    background-position: center; 
+    background-color: #f5f5f5;
+}
+.about{
+	background-image: url('about.jpg');
+	background-position: center;
+	background-color: #f5f5f5;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 60%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+</style>
+<script type="text/javascript">
+
+	function submitdata() {
+		var data = '';
+		data += document.getElementById("name").value + ';'
+		data += document.getElementById("email").value + ';'
+		data += document.getElementById("message").value + ';'
+		data += '\r\n';
+		if(data==';;;\r\n')
+			alert('Please enter Complete Data Before submitting');
+		else
+		{
+			alert('Data Saved Sussessfully!');
+			console.log(data);
+			//window.open( "data:application/vnd.ms-excel;charset=utf-8," + encodeURIComponent(data));
+		}
+	}
+</script>
+<head>
+	<TITLE>AR Designs</TITLE>
+<nav>
+ <li ><a href="#contact_us">Contact Us</a></li>
+ <li ><a href="#about">About</a></li>
+ <li ><a href="#home">Home</a></li>
+</nav>
+</head>
+
+<body background="background.jpg" bgcolor="#f5f5f5">
+	<img src="logo.png" id="home">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div align="center" id="about" class="about">
+	<br>
+	<h2 align="center" style="font-family: arial; color:black;">ABOUT US</h2>
+	<br>
+	<br>
+	<br>
+	<div class="card">
+  	<img src="about-us.jpg" alt="About-us" style="width:100%">
+  	<div class="container">
+    <p align="center" style="font-family: arial; color: #808080; padding: 20px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <form action="#contact_us"> 
+    <button class="button" >Learn More</button>
+	</form>
+    <br>
+    <br>
+  	</div>
+	</div>    
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+</div>
+<br>
+<br>
+<br>
+<div align="center" id="contact_us" class="contact-us">
+	<h2 align="center" style="font-family: arial; color:black;">CONTACT US</h2>
+	<br>
+	<br>
+	<br>
+	<br>
+	<form>
+    <input id="name" type="text" name="name" placeholder="Name" size="70"><br>
+    <br>
+	<input id="email" type="email" name="email" placeholder="Email Id" size="70"><br>
+	<br>
+	<textarea id="message" name="subject" placeholder="Message" style="height:200px; width: 39%; font-size: 15px; font-family:Arial;       padding: 10px 10px" ></textarea>
+	<br>
+	<br>
+    <br>
+	<button id="Submit" class="button" onclick="submitdata()">Submit</button>
+	</form>
+	<br>
+</div>
+<br>
+<label style="font-family: Arial; font-size: 12px" >Copyright © 2019 AR Designs - Design: Akshansh Kumar</label>
+</body>
+</HTML>
