@@ -78,6 +78,7 @@
   width: 90%;
   float: right;
   padding: 10px;
+  background-color: #FDFDFD;
 }
 
 .smallcard {
@@ -94,10 +95,27 @@
   color: #888888;
   font-family: arial;
   padding: 10px;
+  background-color: white;
 }
 
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); 
+  transition: 0.5s;
+}
+
+.card:hover img {
+  height: 0;
+  width: 0;
+  background: url("green.png") no-repeat;
+  background-size: 100px 100px;
+  background-position: top left;
+  padding: 50px;
+}
+
+.card:hover b{
+    text-decoration: none;
+    text-decoration: none;
+    color:#3ebcb3;
 }
 
 .container {
@@ -122,4 +140,24 @@
 	color:#3ebcb3;
 	padding: 10px;
 	cursor: pointer;
+}
+
+.footer{
+	list-style-type: none;
+	text-decoration: none;
+	color: #888888;
+}
+
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  color:#888888;
+}
+
+.fa:hover {
+    opacity: 0.7;
 }
