@@ -23,9 +23,18 @@ function closeNav() {
   document.getElementById("logo").style.paddingLeft="100px";
   flag=false;
 }
+	
+function zoom(){
+	if(screen.height==768){
+		document.body.style.zoom = "100%";
+	}
+	else if(screen.height==1080){
+		document.body.style.zoom = "125%";
+	}
+}
 
 </script>
-<body>
+<body onload="zoom()">
   <div id="mySidenav" class="sidenav">
   <p align="center"><a href="#Content Store"><img src="border.svg" class="btnclicked"></a></p>
   <p align="center"><a href="#search"><img src="search.svg" class="btn"></a></p>
