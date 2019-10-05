@@ -106,7 +106,7 @@
 .card:hover img {
   height: 0;
   width: 0;
-  background: url("green.png") no-repeat;
+  background: url("green.PNG") no-repeat;
   background-size: 100px 100px;
   background-position: top left;
   padding: 50px;
@@ -161,3 +161,4 @@
 .fa:hover {
     opacity: 0.7;
 }
+
