@@ -38,7 +38,7 @@
 }
 
 .sidenav a:hover{
-	background-color: #3ebcb3;
+	border-right: solid 4px #3ebcb3;
 }
 
 .dropdown {
