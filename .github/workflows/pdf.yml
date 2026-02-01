@@ -11,14 +11,17 @@ jobs:
   converttopdf:
     name: Build PDF
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: baileyjm02/markdown-to-pdf@v1
         with:
           input_dir: markdowns/
-          output_dir: pdfs/
+          output_dir: pdf/
           images_dir: images/
-      - uses: actions/upload-artifact@v4
+      - name: Commit PDF
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: resume.pdf
-          path: pdfs/
+          commit_message: "Update resume PDF"
+          file_pattern: pdf/*.pdf
