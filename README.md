@@ -63,7 +63,7 @@ Software Engineer with over **5+ years** of expertise building full-stack applic
 
 ## Education
 
-### Masters of Technoligy (M. Tech)
+### Masters of Technology (M. Tech)
 **BITS Pilani** | 10/2025 - Present
 
 ### Masters of Computer Applications (MCA)
