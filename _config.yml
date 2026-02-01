@@ -6,4 +6,4 @@ relative_links:
   enabled: true
   collections: true
 include:
-  - markdowns/resume.md
+  - resume/resume.md

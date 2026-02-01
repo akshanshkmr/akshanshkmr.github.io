@@ -8,7 +8,7 @@
 
 ---
 
-![](https://raw.githubusercontent.com/akshanshkmr/akshanshkmr/refs/heads/main/code.gif)
+<img src="https://raw.githubusercontent.com/akshanshkmr/akshanshkmr/refs/heads/main/code.gif" alt="Coding" width="100%">
 
 ---
 
