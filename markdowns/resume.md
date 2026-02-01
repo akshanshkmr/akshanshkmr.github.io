@@ -6,9 +6,6 @@
 - LinkedIn: [linkedin.com/in/akshanshkmr](https://linkedin.com/in/akshanshkmr)
 - GitHub: [github.com/akshanshkmr](https://github.com/akshanshkmr)
 
-    
-<img src="avatar.jpeg" alt="Akshansh Kumar's Avatar" width="150px" style="border-radius: 50%;">
-
 ---
 
 ## Summary
