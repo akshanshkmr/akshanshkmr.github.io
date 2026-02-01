@@ -1,11 +1,18 @@
 # Akshansh Kumar
+
 **Software Engineer**
 
-- Email: akshanshkmr821@gmail.com
-- Phone: +918800319173
-- Location: Ghaziabad, India
-- LinkedIn: [linkedin.com/in/akshanshkmr](https://linkedin.com/in/akshanshkmr)
-- GitHub: [github.com/akshanshkmr](https://github.com/akshanshkmr)
+<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+        - Email: <a href="mailto:akshanshkmr821@gmail.com">akshanshkmr821@gmail.com</a> </ul>
+        <ul> <b>Phone:</b> +918800319173</ul>
+        <ul> <b>Location:</b> Ghaziabad, India</ul>
+        LinkedIn: <a href="https://linkedin.com/in/akshanshkmr">linkedin.com/in/akshanshkmr</a>
+        <ul> GitHub: <a href="https://github.com/akshanshkmr">github.com/akshanshkmr</a></ul>
+    </div>
+    <img src="avatar.jpeg" alt="Akshansh Kumar's Avatar" width="150px" style="border-radius: 50%;">
+</div>
+<div style="clear: both;"></div>
 
 ---
 
