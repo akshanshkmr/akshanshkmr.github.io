@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Akshansh ✻ terminal portfolio</title>
+          <meta name="description" content="Akshansh Kumar — Senior Software Engineer at D.E. Shaw. Type a slash command to explore." />
+          <meta property="og:title" content="akshansh.codes" />
+          <meta property="og:description" content="Senior SWE @ D.E. Shaw. Try /projects." />
+          <meta property="og:image" content="public/og-image.png" />
+          <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='16' y='24' font-size='28' text-anchor='middle' fill='%23d97757'>✻<animate attributeName='opacity' values='1;0.35;1' dur='1.6s' repeatCount='indefinite'/></text></svg>" />
+          <link rel="stylesheet" href="styles.css" />
+          <script>
+               // GitHub Pages SPA fallback decoder — restores deep-link paths
+               // routed through 404.html. See `404.html` for the encoder side.
+               (function (l) {
+                    if (l.search && l.search[1] === '/') {
+                         var decoded = l.search
+                              .slice(1)
+                              .split('&')
+                              .map(function (s) { return s.replace(/~and~/g, '&'); })
+                              .join('?');
+                         window.history.replaceState(null, null,
+                              l.pathname.slice(0, -1) + decoded + l.hash);
+                    }
+               })(window.location);
+          </script>
+     </head>
+     <body>
+          <main class="scroll" id="scroll" aria-live="polite"></main>
+
+          <div class="prompt-wrap" id="prompt-wrap">
+               <div class="prompt-line top"><span class="corner">╭</span><span class="dashes-fill"></span><span class="corner">╮</span></div>
+               <div class="prompt-line mid">
+                    <span class="corner">│</span>
+                    <form class="prompt-form" id="prompt" autocomplete="off">
+                         <span class="gt">&gt;</span>
+                         <input
+                              class="prompt-input"
+                              id="prompt-input"
+                              type="text"
+                              spellcheck="false"
+                              autocapitalize="off"
+                              autocorrect="off"
+                              placeholder="Try /about, /skills, /snake"
+                              aria-label="Terminal input"
+                         />
+                    </form>
+                    <span class="corner">│</span>
+               </div>
+               <div class="prompt-line bot"><span class="corner">╰</span><span class="dashes-fill"></span><span class="corner">╯</span></div>
+          </div>
+
+          <div class="statusbar">
+               <span><span class="key">?</span> for shortcuts &nbsp;·&nbsp; <span class="key">↑↓</span> history &nbsp;·&nbsp; <span class="key">tab</span> autocomplete</span>
+               <span><span class="ok-dot">●</span> online &nbsp;·&nbsp; akshansh.codes</span>
+          </div>
+
+          <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+          <div class="mobile-fallback" id="mobile-fallback" hidden></div>
+
+          <script type="module" src="shell.js"></script>
+     </body>
+</html>
+

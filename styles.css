@@ -1,0 +1,340 @@
+/* akshansh.codes — Claude Code TUI portfolio
+         Theme: warm dark (Tokyo-Night-ish base + Claude coral accent) */
+
+:root {
+     --bg:                    #16161e;
+     --text:               #c5c8d6;
+     --dim:                #565869;
+     --very-dim:     #535670;
+     --accent:          #d97757;                         /* Claude coral */
+     --ok:                    #9ece6a;                         /* tool-call green */
+     --cyan:               #7dcfff;
+     --red:                #f7768e;
+     --selection: rgba(217, 119, 87, 0.25);
+     --font-mono: 'IBM Plex Mono', 'JetBrains Mono', 'Source Code Pro',
+                                       Menlo, Consolas, 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; }
+
+::selection { background: var(--selection); color: var(--text); }
+
+html, body {
+     margin: 0;
+     padding: 0;
+     background: var(--bg);
+     color: var(--text);
+     font-family: var(--font-mono);
+     font-size: 15px;
+     line-height: 1.3;
+     height: 100vh;
+     overflow: hidden;
+     font-feature-settings: 'liga' 0, 'calt' 0;
+     font-variant-ligatures: none;
+     -webkit-font-smoothing: antialiased;
+     text-rendering: geometricPrecision;
+}
+
+body {
+     display: flex;
+     flex-direction: column;
+     position: relative;
+}
+
+/* ───────── scroll area ───────── */
+
+.scroll {
+     flex: 1;
+     overflow-y: auto;
+     overflow-x: hidden;
+     padding: 4px 8px 0 8px;
+     white-space: pre;
+}
+.scroll::-webkit-scrollbar { width: 8px; }
+.scroll::-webkit-scrollbar-track { background: transparent; }
+.scroll::-webkit-scrollbar-thumb { background: var(--very-dim); border-radius: 0; }
+
+/* ───────── banner ───────── */
+
+.banner {
+     color: var(--accent);
+     font-size: 12px;
+     line-height: 1.05;
+     white-space: pre;
+     margin: 6px 0 8px 8px;
+}
+
+/* ───────── welcome-box (two-column boot screen) ───────── */
+
+.welcome-box {
+     font-family: var(--font-mono);
+     font-size: 14px;
+     line-height: 1.4;
+     white-space: pre;
+     margin: 8px 0 10px 8px;
+     color: var(--text);
+     overflow-x: auto;
+     display: inline-block;
+}
+
+/* ───────── text-box (welcome screen) ─────────
+         Built entirely from characters in a <pre>. Pixel-perfect alignment by
+         construction: corners, sides, and edges all live on the same char grid. */
+
+.text-box {
+     margin: 6px 0 6px 8px;
+     font-family: var(--font-mono);
+     font-size: 14px;
+     line-height: 1.3;
+     white-space: pre;
+     color: var(--text);
+     display: inline-block;
+}
+.text-box .cc-dim { color: var(--very-dim); }
+
+/* ───────── user input echo ───────── */
+
+.user-line { margin: 8px 0 2px 0; color: var(--text); white-space: pre-wrap; }
+.user-line .gt { color: var(--accent); }
+
+/* ───────── tool / error blocks (⏺ name(meta) / ⎿ body) ───────── */
+
+.tool { margin: 2px 0 4px 0; }
+
+.tool-head { display: block; }
+.tool-head .dot { color: var(--ok); }
+.tool-head .name { color: var(--text); }
+.tool-head .meta { color: var(--dim); }
+
+.tool--error .tool-head .dot { color: var(--red); }
+.tool--error .tool-head .name { color: var(--red); }
+
+.tool-body {
+     display: flex;
+     align-items: flex-start;
+     margin-top: 1px;
+}
+.tool-body .branch-col {
+     flex: 0 0 5ch;
+     white-space: pre;
+     color: var(--very-dim);
+}
+.tool-body .body-col {
+     flex: 1 1 auto;
+     min-width: 0;
+     white-space: pre-wrap;
+     color: var(--text);
+}
+.tool--error .tool-body .body-col { color: var(--red); }
+
+/* HTML inside body-col (markdown-rendered project pages, etc) */
+.body-col p { margin: 0 0 0.4em 0; }
+.body-col p:last-child { margin-bottom: 0; }
+.body-col h2, .body-col h3 {
+     font-size: inherit;
+     font-weight: normal;
+     color: var(--accent);
+     margin: 0.4em 0 0.1em 0;
+}
+.body-col h2::before { content: '## '; color: var(--very-dim); }
+.body-col h3::before { content: '### '; color: var(--very-dim); }
+.body-col code {
+     background: rgba(255,255,255,0.04);
+     padding: 0 0.3em;
+     border-radius: 2px;
+     color: var(--cyan);
+}
+.body-col strong { color: var(--text); font-weight: 600; }
+.body-col em { color: var(--dim); font-style: normal; }
+.body-col a { color: var(--cyan); text-decoration: none; }
+.body-col a:hover { text-decoration: underline; }
+.body-col ul, .body-col ol { margin: 0.2em 0; padding-left: 2ch; }
+.body-col li { margin: 0; }
+.body-col li::marker { color: var(--very-dim); }
+
+/* clickable project slug in /projects list */
+.project-name {
+     color: var(--cyan);
+     cursor: pointer;
+     text-decoration: none;
+}
+.project-name:hover { text-decoration: underline; }
+
+/* ───────── prompt box (bottom) ─────────
+         Character corners (╭ ╮ ╰ ╯ │) and a CSS-stretched dash filler row.
+         The horizontal `─` chars overflow-clip to fit any viewport width. */
+
+.prompt-wrap { padding: 0 8px 2px 8px; flex-shrink: 0; }
+
+.prompt-line {
+     display: flex;
+     align-items: center;
+     white-space: pre;
+     line-height: 1.3;
+     color: var(--very-dim);
+}
+.prompt-line .corner { flex: 0 0 auto; color: var(--very-dim); }
+.prompt-line .dashes-fill {
+     flex: 1 1 auto;
+     min-width: 0;
+     align-self: stretch;
+     background: linear-gradient(to right, var(--very-dim), var(--very-dim));
+     background-size: 100% 2px;
+     background-repeat: no-repeat;
+     background-position: 0 50%;
+}
+
+.prompt-form {
+     flex: 1 1 auto;
+     display: flex;
+     align-items: center;
+     gap: 0.5ch;
+     padding: 0 1ch;
+     min-width: 0;
+}
+.prompt-form .gt { color: var(--accent); flex: 0 0 auto; }
+.prompt-input {
+     flex: 1 1 auto;
+     background: transparent;
+     border: none;
+     outline: none;
+     color: var(--text);
+     font-family: var(--font-mono);
+     font-size: 15px;
+     line-height: 1.3;
+     caret-color: var(--accent);
+     padding: 0;
+     min-width: 0;
+}
+.prompt-input::placeholder { color: var(--very-dim); }
+
+/* ───────── status bar ───────── */
+
+.statusbar {
+     display: flex;
+     justify-content: space-between;
+     padding: 6px 10px 8px 10px;
+     color: var(--dim);
+     font-size: 14px;
+     white-space: pre;
+     flex-shrink: 0;
+}
+.statusbar .key { color: var(--text); }
+.statusbar .ok-dot { color: var(--ok); }
+
+/* ───────── toast (for /share) ───────── */
+
+.toast {
+     position: fixed;
+     bottom: 60px;
+     left: 50%;
+     transform: translateX(-50%) translateY(8px);
+     background: rgba(158, 206, 106, 0.12);
+     border: 1px solid var(--ok);
+     color: var(--ok);
+     padding: 6px 12px;
+     font-family: var(--font-mono);
+     font-size: 12px;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.2s, transform 0.2s;
+     z-index: 20;
+}
+.toast--visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ───────── mobile fallback ───────── */
+
+.mobile-fallback {
+     max-width: 600px;
+     margin: 0 auto;
+     padding: 24px;
+     color: var(--text);
+     font-family: var(--font-mono);
+     font-size: 14px;
+     line-height: 1.5;
+}
+.mobile-fallback h1 { color: var(--accent); margin-top: 0; }
+.mobile-fallback h2 { color: var(--accent); font-size: 16px; }
+.mobile-fallback a { color: var(--cyan); }
+
+@media (max-width: 600px) {
+     html, body { overflow: auto; }
+     .scroll, .prompt-wrap, .statusbar { display: none; }
+     .mobile-fallback { display: block !important; }
+}
+
+/* ───────── snake (inline, scroll-integrated) ───────── */
+
+.snake-grid-inline {
+     font-family: var(--font-mono);
+     font-size: 16px;
+     line-height: 1;
+     white-space: pre;
+     margin: 0;
+     display: inline-block;
+     padding: 10px 14px;
+     background: rgba(0, 0, 0, 0.3);
+     border: 1px solid var(--accent);
+     border-radius: 2px;
+}
+.snake-grid-inline .s { color: var(--accent); }
+.snake-grid-inline .a { color: var(--ok); }
+.snake-grid-inline .e { color: var(--very-dim); }
+
+/* ───────── vim (fullscreen overlay, themed) ───────── */
+
+.vim-modal {
+     position: fixed;
+     inset: 0;
+     background: var(--bg);
+     color: var(--text);
+     font-family: var(--font-mono);
+     font-size: 14px;
+     line-height: 1.4;
+     display: flex;
+     flex-direction: column;
+     z-index: 100;
+}
+.vim-screen {
+     flex: 1;
+     padding: 12px 20px;
+     overflow: hidden;
+}
+.vim-screen .vim-tilde { color: var(--very-dim); }
+.vim-status {
+     background: var(--very-dim);
+     color: var(--text);
+     padding: 2px 20px;
+     font-size: 12px;
+     display: flex;
+     gap: 16px;
+     align-items: center;
+}
+.vim-status-mode {
+     background: var(--accent);
+     color: var(--bg);
+     padding: 0 8px;
+     font-weight: 600;
+     letter-spacing: 0.05em;
+}
+.vim-status-mode[data-mode="COMMAND"] { background: var(--cyan); }
+.vim-status-mode[data-mode="EXIT"]          { background: var(--ok); }
+.vim-status-file { color: var(--text); }
+.vim-cmd {
+     padding: 4px 20px 8px 20px;
+     background: var(--bg);
+     color: var(--text);
+}
+.vim-cmd .vim-prompt { color: var(--accent); }
+.vim-cmd .vim-buf { color: var(--text); }
+.vim-cmd .vim-cursor {
+     color: var(--accent);
+     animation: vim-blink 1.05s steps(2) infinite;
+}
+@keyframes vim-blink { 50% { opacity: 0; } }
+
+/* ───────── matrix overlay ───────── */
+
+.matrix-overlay { position: fixed; inset: 0; background: var(--bg); overflow: hidden; z-index: 100; }
+.matrix-canvas { width: 100%; height: 100%; display: block; }
+

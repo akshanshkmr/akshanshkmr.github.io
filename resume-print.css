@@ -1,0 +1,156 @@
+/* ATS-friendly single-style resume.
+         Same layout for TUI inline and PDF print. Color tokens swap via --rs-*. */
+
+.resume {
+     --rs-text:           var(--text);
+     --rs-dim:               var(--dim);
+     --rs-very-dim: var(--very-dim);
+     --rs-accent:      var(--accent);
+     --rs-link:           var(--cyan);
+    
+     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+     font-size: 13px;
+     line-height: 1.5;
+     color: var(--rs-text);
+     max-width: 100%;
+     background: rgba(255, 255, 255, 0.02);
+     border: 1px solid var(--very-dim);
+     border-radius: 4px;
+     padding: 18px 22px;
+}
+
+.resume * { box-sizing: border-box; }
+
+/* ── header ── */
+.resume .r-head { margin-bottom: 14px; }
+.resume .r-head h1 {
+     font-size: 22px;
+     font-weight: 700;
+     line-height: 1.2;
+     margin: 0 0 2px 0;
+     color: var(--rs-text);
+     letter-spacing: -0.01em;
+}
+.resume .r-title {
+     font-size: 13px;
+     color: var(--rs-dim);
+     font-weight: 500;
+     margin-bottom: 6px;
+}
+.resume .r-contact {
+     font-size: 12px;
+     color: var(--rs-dim);
+     display: flex;
+     flex-wrap: wrap;
+     gap: 6px;
+     align-items: center;
+}
+.resume .r-contact a { color: var(--rs-link); text-decoration: none; }
+.resume .r-contact a:hover { text-decoration: underline; }
+.resume .r-contact .r-sep { color: var(--rs-very-dim); }
+
+/* ── sections ── */
+.resume .r-section { margin-top: 14px; }
+.resume .r-section h2 {
+     font-size: 11px;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 0.12em;
+     color: var(--rs-accent);
+     margin: 0 0 6px 0;
+     padding-bottom: 3px;
+     border-bottom: 1px solid var(--rs-very-dim);
+}
+.resume .r-section p { margin: 0; color: var(--rs-text); }
+
+/* ── skills (definition list — ATS-readable) ── */
+.resume .r-skills {
+     display: grid;
+     grid-template-columns: max-content 1fr;
+     gap: 4px 16px;
+     margin: 0;
+}
+.resume .r-skills dt {
+     color: var(--rs-dim);
+     font-weight: 500;
+     font-size: 12px;
+}
+.resume .r-skills dd {
+     margin: 0;
+     color: var(--rs-text);
+     font-size: 12px;
+}
+
+/* ── jobs / education ── */
+.resume .r-job, .resume .r-edu { margin-top: 10px; }
+.resume .r-job:first-of-type, .resume .r-edu:first-of-type { margin-top: 4px; }
+
+.resume .r-job-head {
+     display: flex;
+     justify-content: space-between;
+     align-items: baseline;
+     gap: 12px;
+}
+.resume .r-job-head h3 {
+     font-size: 13px;
+     font-weight: 600;
+     margin: 0;
+     color: var(--rs-text);
+}
+.resume .r-date {
+     font-size: 11px;
+     color: var(--rs-dim);
+     white-space: nowrap;
+     font-variant-numeric: tabular-nums;
+}
+.resume .r-company {
+     font-size: 12px;
+     color: var(--rs-dim);
+     font-style: italic;
+     margin-bottom: 4px;
+}
+.resume .r-edu-detail {
+     font-size: 12px;
+     color: var(--rs-dim);
+     margin-top: 1px;
+}
+
+/* ── projects (under jobs) ── */
+.resume .r-projects { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.resume .r-proj h4 {
+     font-size: 12px;
+     font-weight: 600;
+     margin: 0 0 1px 0;
+     color: var(--rs-text);
+}
+.resume .r-proj p {
+     font-size: 12px;
+     color: var(--rs-text);
+     margin: 0;
+}
+
+/* ── achievements ── */
+.resume .r-ach { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.resume .r-ach li {
+     display: flex;
+     justify-content: space-between;
+     align-items: baseline;
+     gap: 12px;
+     font-size: 12px;
+}
+.resume .r-ach li::before {
+     content: '·';
+     color: var(--rs-very-dim);
+     margin-right: 6px;
+}
+.resume .r-ach li > span:first-of-type { flex: 1; }
+
+/* ── strong / em ── */
+.resume strong { color: var(--rs-text); font-weight: 600; }
+.resume em { color: var(--rs-dim); font-style: normal; }
+
+
+/* TUI inline view uses no custom classes — semantic HTML inherits styling
+         from `.body-col` in styles.css (markdown-style: h2 → "## Heading" in coral,
+         ul li markers in dim, etc). Same look as /about and /projects deep-dives. */
+
