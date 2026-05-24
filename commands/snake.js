@@ -180,4 +180,3 @@ export default {
           timer = setInterval(step, speed);
      }),
 };
-

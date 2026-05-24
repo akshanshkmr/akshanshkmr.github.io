@@ -441,11 +441,20 @@ body {
      padding: 2px 8px;
      cursor: pointer;
      transition: background 0.15s, border-color 0.15s, color 0.15s;
+     -webkit-tap-highlight-color: transparent;
+     touch-action: manipulation;   /* no 300ms tap delay */
+     user-select: none;
 }
 .hud-btn:hover {
      background: rgba(125, 207, 255, 0.1);
      border-color: var(--cyan);
      color: var(--text);
+}
+.hud-btn:active {
+     background: rgba(125, 207, 255, 0.2);
+     border-color: var(--cyan);
+     color: #fff;
+     transform: scale(0.96);
 }
 
 body.theme-github-light .hud-btn {

@@ -58,18 +58,38 @@ export default {
           function paint() {
                const menuText = THEMES.map((t, idx) => {
                     if (idx === selectedIdx) {
-                         return `<span style="color:var(--accent);font-weight:bold">▶ ${t}</span>`;
+                         return `<span class="theme-menu-item active" data-idx="${idx}" style="color:var(--accent);font-weight:bold;cursor:pointer;display:block;padding:4px 0;">▶ ${t}</span>`;
                     }
-                    return `  <span style="color:var(--dim)">${t}</span>`;
+                    return `<span class="theme-menu-item" data-idx="${idx}" style="color:var(--dim);cursor:pointer;display:block;padding:4px 0;">  ${t}</span>`;
                }).join('\n');
-               bodyCol.innerHTML = `Select terminal theme:\n\n${menuText}\n\n<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
+               bodyCol.innerHTML = `Select terminal theme:\n\n<div class="theme-menu-wrap">${menuText}</div>\n\n<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
                
                // Keep scrolling aligned as selection updates
                scroll.scrollTop = scroll.scrollHeight;
           }
 
+          function onMenuClick(e) {
+               const item = e.target.closest('.theme-menu-item');
+               if (!item) return;
+               e.preventDefault();
+               e.stopPropagation();
+               const idx = parseInt(item.dataset.idx, 10);
+               selectedIdx = idx;
+
+               const finalTheme = THEMES[selectedIdx];
+               applyTheme(finalTheme);
+               localStorage.setItem('theme', finalTheme);
+               clearScroll(scroll);
+               renderInitial(scroll);
+               showToast(`✓ theme set to ${finalTheme}`);
+
+               bodyCol.innerHTML = `applied theme <strong style="color:var(--accent)">${finalTheme}</strong>`;
+               cleanup();
+          }
+
           function cleanup() {
                window.removeEventListener('keydown', onKey, true);
+               bodyCol.removeEventListener('click', onMenuClick);
                input.readOnly = false;
                setTimeout(() => {
                     input.focus();
@@ -112,6 +132,7 @@ export default {
                }
           }
 
+          bodyCol.addEventListener('click', onMenuClick);
           window.addEventListener('keydown', onKey, true);
           paint();
      }),

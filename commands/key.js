@@ -95,21 +95,49 @@ export default {
 
                const menuText = options.map((opt, idx) => {
                     if (idx === selectedIdx) {
-                         return `<span style="color:var(--accent);font-weight:bold">▶ ${opt}</span>`;
+                         return `<span class="key-menu-item active" data-idx="${idx}" style="color:var(--accent);font-weight:bold;cursor:pointer;display:block;padding:4px 0;">▶ ${opt}</span>`;
                     }
-                    return `  <span style="color:var(--dim)">${opt}</span>`;
+                    return `<span class="key-menu-item" data-idx="${idx}" style="color:var(--dim);cursor:pointer;display:block;padding:4px 0;">  ${opt}</span>`;
                }).join('\n');
 
                bodyCol.innerHTML = `Current Status: ${status}\n\n` +
                                    `Get a free key from Google AI Studio: <a href="https://aistudio.google.com/" target="_blank" style="color:var(--cyan);text-decoration:underline;">aistudio.google.com</a>\n\n` +
-                                   `${menuText}\n\n` +
+                                   `<div class="key-menu-wrap">${menuText}</div>\n\n` +
                                    `<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
                
                scroll.scrollTop = scroll.scrollHeight;
           }
 
+          function onMenuClick(e) {
+               const item = e.target.closest('.key-menu-item');
+               if (!item) return;
+               e.preventDefault();
+               e.stopPropagation();
+               const idx = parseInt(item.dataset.idx, 10);
+               selectedIdx = idx;
+               paintMenu();
+
+               const choice = options[selectedIdx];
+               if (choice.startsWith('Paste / Enter')) {
+                    window.removeEventListener('keydown', onKeyMenu, true);
+                    bodyCol.removeEventListener('click', onMenuClick);
+                    setTimeout(() => {
+                         promptForKeyEntry();
+                    }, 50);
+               } else if (choice.startsWith('Clear existing')) {
+                    localStorage.removeItem('gemini_api_key');
+                    showToast('✓ API key cleared');
+                    bodyCol.innerHTML = `<span style="color:var(--dim)">API key cleared successfully.</span>`;
+                    cleanup();
+               } else {
+                    bodyCol.innerHTML = `<span style="color:var(--dim)">Interactive key setup cancelled.</span>`;
+                    cleanup();
+               }
+          }
+
           function cleanup() {
                window.removeEventListener('keydown', onKeyMenu, true);
+               bodyCol.removeEventListener('click', onMenuClick);
                input.readOnly = false;
                input.focus();
                resolve();
@@ -217,6 +245,7 @@ export default {
                window.addEventListener('keydown', onKeyInput, true);
           }
 
+          bodyCol.addEventListener('click', onMenuClick);
           window.addEventListener('keydown', onKeyMenu, true);
           paintMenu();
      })
