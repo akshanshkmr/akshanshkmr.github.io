@@ -253,7 +253,7 @@ function tuiHeader(meta) {
      const borderDim = (s) => `<span style="color:var(--very-dim)">${s}</span>`;
      const contentAccent = (s) => `<span style="color:var(--accent);font-weight:bold">${s}</span>`;
      
-     const W = 77; // Width matching standard Welcome box padding
+     const W = 79;
      const padRightLocal = (s, n) => {
           const clean = stripHtml(s);
           return s + ' '.repeat(Math.max(0, n - clean.length));

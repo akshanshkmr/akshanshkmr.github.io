@@ -74,6 +74,7 @@ function setupMobileFallback(resume) {
           <h2>Contact</h2>
           <ul>
                ${m.email ? `<li><a href="mailto:${m.email}">${m.email}</a></li>` : ""}
+               ${m.website ? `<li><a href="https://${m.website}">${m.website}</a></li>` : ""}
                ${m.linkedin ? `<li><a href="https://${m.linkedin}">${m.linkedin}</a></li>` : ""}
                ${m.github ? `<li><a href="https://${m.github}">${m.github}</a></li>` : ""}
           </ul>

@@ -51,3 +51,13 @@ Developed an active resource monitoring service tracking CPU, memory, and thread
 - 1st Place, D. E. Shaw QTE Hackathon (Excellence in Engineering & QA Tools) | 2021
 - Completed Google Foobar Challenge (Advanced algorithmic coding challenge) | 2022
 - Google Bug Hunter Hall of Fame (Secured vulnerabilities in Google core products) | 2019
+
+# Publications & Patents
+
+- **Patent (Co-Inventor)**: "A Wearable Device For Mobile Wireless Charging" | Filed in partnership with Amity Institute of Information Technology (AIIT), Amity University Noida.
+- **Publication (Co-Author)**: "Big Data: A Problem and Mother of many Inventions" | Published in *CYBERNOMICS* (2020) — a research study investigating the evolution of data systems, computational challenges, and downstream analytics.
+
+# Open Source Projects
+
+- **amizone-api** (Python): Designed and developed the original unofficial Python API wrapper for Amizone.net (Amity University Student Portal), allowing students and community developers to programmatically fetch profile structures, timetables, courses, exam schedules, and grades.
+- **amizone-faculty-feedback** (Python): Engineered an automation script to streamline faculty feedback form submissions, simplifying student administrative workflows on Amizone.
