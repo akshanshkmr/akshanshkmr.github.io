@@ -220,6 +220,10 @@ const SECTION_RENDERERS = {
 // listing. body-col has `white-space: pre-wrap` so newlines render as line
 // breaks. `\n\n` between sections produces a visible blank line.
 
+function stripHtml(s) {
+     return String(s).replace(/<[^>]+>/g, '');
+}
+
 function tuiContact(meta) {
      const parts = [];
      if (meta.email) parts.push(`<a href="mailto:${escapeHtml(meta.email)}">${escapeHtml(meta.email)}</a>`);
@@ -231,53 +235,129 @@ function tuiContact(meta) {
      return parts.join(' · ');
 }
 
-const padRight = (s, n) => s + ' '.repeat(Math.max(0, n - s.length));
+function tuiHeader(meta) {
+     const titleLine = `${meta.name || ''} ✻ ${meta.title || ''}`;
+     
+     const parts1 = [];
+     if (meta.email) parts1.push(`<a href="mailto:${escapeHtml(meta.email)}">${escapeHtml(meta.email)}</a>`);
+     if (meta.phone) parts1.push(escapeHtml(meta.phone));
+     if (meta.location) parts1.push(escapeHtml(meta.location));
+     const contactLine1 = parts1.join(' · ');
+
+     const parts2 = [];
+     ['linkedin', 'github', 'website', 'portfolio'].forEach((k) => {
+          if (meta[k]) parts2.push(`<a href="https://${escapeHtml(meta[k])}">${escapeHtml(meta[k])}</a>`);
+     });
+     const contactLine2 = parts2.join(' · ');
+     
+     const borderDim = (s) => `<span style="color:var(--very-dim)">${s}</span>`;
+     const contentAccent = (s) => `<span style="color:var(--accent);font-weight:bold">${s}</span>`;
+     
+     const W = 77; // Width matching standard Welcome box padding
+     const padRightLocal = (s, n) => {
+          const clean = stripHtml(s);
+          return s + ' '.repeat(Math.max(0, n - clean.length));
+     };
+     
+     const titleFormatted = `  ${contentAccent(titleLine)}`;
+     const contactFormatted1 = `  ${contactLine1}`;
+     const contactFormatted2 = `  ${contactLine2}`;
+     
+     return [
+          borderDim('┌' + '─'.repeat(W) + '┐'),
+          borderDim('│') + padRightLocal(titleFormatted, W) + borderDim('│'),
+          borderDim('│') + padRightLocal(contactFormatted1, W) + borderDim('│'),
+          borderDim('│') + padRightLocal(contactFormatted2, W) + borderDim('│'),
+          borderDim('└' + '─'.repeat(W) + '┘')
+     ].join('\n');
+}
 
 function sectionHead(title) {
+     const W = 79;
+     const lineLen = W - title.length - 4; // "■ " (2) + " " (1) + title
+     const bar = '─'.repeat(Math.max(2, lineLen));
      return (
-          `<span style="color:var(--very-dim)">## </span>` +
-          `<span style="color:var(--accent);font-weight:600">${escapeHtml(title)}</span>`
+          `<span style="color:var(--very-dim)">■ </span>` +
+          `<span style="color:var(--accent);font-weight:bold;text-transform:uppercase;letter-spacing:0.05em">${escapeHtml(title)}</span> ` +
+          `<span style="color:var(--very-dim)">${bar}</span>`
      );
 }
 
 function tuiSkills(c) {
      const rows = parseTableRows(c);
      if (!rows.length) return '';
+     
      const widest = Math.max(...rows.map((r) => r[0].length));
-     return rows
-          .map(
-               (r) =>
-                    `<span style="color:var(--dim)">${escapeHtml(padRight(r[0], widest))}</span>     ${escapeHtml(r[1])}`,
-          )
-          .join('\n');
+     const colWidth = Math.max(widest + 1, 24); // Safe column cell count
+     
+     const gridRows = rows
+          .map((r) => {
+               const cat = `<div style="grid-column: 1; color: var(--accent); font-weight: bold;">${escapeHtml(r[0])}</div>`;
+               const sep = `<div style="grid-column: 2; color: var(--very-dim); text-align: center;">│</div>`;
+               const items = `<div style="grid-column: 3; color: var(--text);">${escapeHtml(r[1])}</div>`;
+               return `${cat}${sep}${items}`;
+          })
+          .join('');
+          
+     return `<div style="display: grid; grid-template-columns: ${colWidth}ch 3ch 1fr; gap: 6px 0; align-items: start; margin-left: 2ch; font-family: var(--font-mono);">${gridRows}</div>`;
 }
 
 function tuiExp(c) {
      return parseExperience(c)
           .map((j) => {
-               const head = [j.role, j.company, j.date].filter(Boolean).map(escapeHtml).join(' · ');
+               const companyHeader = `<span style="color:var(--accent);font-weight:bold">${escapeHtml(j.role)}</span> <span style="color:var(--very-dim)">@</span> <span style="color:var(--text);font-weight:600">${escapeHtml(j.company)}</span>`;
+               const dateHeader = `<span style="color:var(--dim)">(${escapeHtml(j.date)})</span>`;
+               
+               const W = 79;
+               const leftLen = stripHtml(companyHeader).length;
+               const rightLen = stripHtml(dateHeader).length;
+               const spacing = ' '.repeat(Math.max(2, W - leftLen - rightLen));
+               const jobHead = `${companyHeader}${spacing}${dateHeader}`;
+               
                const projects = j.projects
                     .map(
                          (p) =>
-                              `<span style="color:var(--cyan)">⏵ ${escapeHtml(p.title)}</span>\n${boldify(p.desc)}`,
+                              `<span style="color:var(--cyan)">  ⏵ ${escapeHtml(p.title)}</span>\n  <span style="color:var(--text)">${boldify(p.desc)}</span>`,
                     )
                     .join('\n\n');
-               return `<strong>${head}</strong>\n\n${projects}`;
+               return `${jobHead}\n${projects}`;
           })
-          .join('\n\n\n');
+          .join('\n\n' + `<span style="color:var(--very-dim)">${'· '.repeat(39)}</span>` + '\n\n');
 }
 
 function tuiEdu(c) {
      return parseTableRows(c)
-          .map((r) => [r[0], r[1], r[2], r[3]].filter(Boolean).map(escapeHtml).join(' · '))
+          .map((r) => {
+               const degree = `<span style="color:var(--cyan);font-weight:600">${escapeHtml(r[0])}</span>`;
+               const institution = `<span style="color:var(--text)">${escapeHtml(r[1])}</span>`;
+               const date = `<span style="color:var(--dim)">(${escapeHtml(r[2] || '')})</span>`;
+               const details = r[3] ? ` <span style="color:var(--dim)">· ${escapeHtml(r[3])}</span>` : '';
+               
+               const line = `  ${degree} <span style="color:var(--very-dim)">·</span> ${institution}${details}`;
+               const W = 79;
+               const leftLen = stripHtml(line).length;
+               const rightLen = stripHtml(date).length;
+               const spacing = ' '.repeat(Math.max(2, W - leftLen - rightLen));
+               return `${line}${spacing}${date}`;
+          })
           .join('\n');
 }
 
 function tuiAch(c) {
      return parseListItems(c)
           .map(
-               (a) =>
-                    `<span style="color:var(--very-dim)">·</span> ${boldify(a.text)}${a.year ? ` <span style="color:var(--dim)">· ${escapeHtml(a.year)}</span>` : ''}`,
+               (a) => {
+                    const icon = `<span style="color:var(--accent)">★</span>`;
+                    const text = `${icon} ${boldify(a.text)}`;
+                    const year = a.year ? `<span style="color:var(--dim)">(${escapeHtml(a.year)})</span>` : '';
+                    if (!year) return `  ${text}`;
+                    
+                    const W = 79;
+                    const leftLen = stripHtml(text).length + 2; // account for leading spacing
+                    const rightLen = stripHtml(year).length;
+                    const spacing = ' '.repeat(Math.max(2, W - leftLen - rightLen));
+                    return `  ${text}${spacing}${year}`;
+               }
           )
           .join('\n');
 }
@@ -289,13 +369,6 @@ const TUI_SECTION_RENDERERS = {
      education: tuiEdu,
      achievements: tuiAch,
 };
-
-function tuiHeader(meta) {
-     let h = `<strong style="color:var(--accent);font-size:15px">${escapeHtml(meta.name || '')}</strong>`;
-     if (meta.title) h += ` <span style="color:var(--cyan)">· ${escapeHtml(meta.title)}</span>`;
-     h += `\n<span style="color:var(--dim);font-size:12px">${tuiContact(meta)}</span>`;
-     return h;
-}
 
 // ── Public API ─────────────────────────────────────
 

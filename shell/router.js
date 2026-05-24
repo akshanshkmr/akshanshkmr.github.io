@@ -1,11 +1,7 @@
 const KNOWN_PATHS = new Set([
-     'about',
-     'projects',
-     'skills',
-     'experience',
-     'contact',
      'resume',
      'help',
+     'theme',
 ]);
 
 const TRANSIENT = new Set([
@@ -14,7 +10,6 @@ const TRANSIENT = new Set([
      'share',
      'sudo',
      'vim',
-     'coffee',
      'matrix',
      'ascii',
      'init',

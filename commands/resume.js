@@ -43,28 +43,15 @@ async function pdf(parsed) {
           html, body { margin: 0; background: white; }
           body { font-family: 'Inter', -apple-system, system-ui, sans-serif; }
 
-          @page { size: A4; margin: 14mm 14mm; }
+          @page { size: A4; margin: 12mm 15mm; }
 
-          /* Print theme — light, ATS-friendly */
+          /* Print overrides for iframe context */
           .resume {
-               --rs-text:           #1a1a1a;
-               --rs-dim:               #555555;
-               --rs-very-dim: #c0c0c0;
-               --rs-accent:      #1a1a1a;
-               --rs-link:           #2563eb;
                background: white !important;
                border: none !important;
                padding: 0 !important;
                max-width: none !important;
-               font-size: 10.5px;
-               line-height: 1.45;
-               color: #1a1a1a !important;
           }
-          .resume .r-head h1 { font-size: 20px; }
-          .resume .r-section h2 { font-size: 10.5px; border-color: #1a1a1a; }
-          .resume .r-section { margin-top: 10px; }
-          .resume .r-job, .resume .r-edu { margin-top: 7px; }
-          .resume .r-projects { gap: 4px; }
 
           /* Page breaks: keep individual jobs/projects/edu entries together,
                    but allow sections themselves to split between items. */
@@ -81,29 +68,41 @@ async function pdf(parsed) {
 </html>`);
      doc.close();
 
-     function triggerPrint() {
-          try {
-               iframe.contentWindow.focus();
-               iframe.contentWindow.print();
-          } catch (err) {
-               console.error('resume pdf: print failed', err);
+     return new Promise((resolve) => {
+          function triggerPrint() {
+               try {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+               } catch (err) {
+                    console.error('resume pdf: print failed', err);
+               }
+               setTimeout(() => {
+                    iframe.remove();
+                    resolve();
+               }, 60_000);
           }
-          setTimeout(() => iframe.remove(), 60_000);
-     }
 
-     iframe.addEventListener('load', () => {
-          const fonts = iframe.contentDocument.fonts;
-          if (fonts && fonts.ready) fonts.ready.then(triggerPrint);
-          else setTimeout(triggerPrint, 500);
+          iframe.addEventListener('load', () => {
+               const fonts = iframe.contentDocument.fonts;
+               if (fonts && fonts.ready) fonts.ready.then(triggerPrint);
+               else setTimeout(triggerPrint, 500);
+          });
      });
 }
 
+const OPTIONS = [
+     'View inline in Terminal (TUI)',
+     'Download / Print ATS-Friendly PDF'
+];
+
 export default {
      name: 'resume',
-     description: 'view full resume — try /resume --pdf',
-     run: async (args, { renderBlock, scroll, resume }) => {
+     description: 'view or download resume interactively',
+     run: (args, { renderBlock, scroll, resume }) => new Promise((resolve) => {
           const parsed = resume;
+          const input = document.getElementById("prompt-input");
 
+          // Direct bypass flags
           if (args.includes('--pdf') || args.includes('--print')) {
                renderBlock(scroll, {
                     type: 'tool',
@@ -111,16 +110,73 @@ export default {
                     meta: 'pdf',
                     bodyText: 'opening print dialog…',
                });
-               await pdf(parsed);
+               pdf(parsed).then(resolve);
                return;
           }
 
-          const html = renderResumeTerminal(parsed);
-          renderBlock(scroll, {
+          // Interactive mode
+          input.blur();
+          input.readOnly = true;
+
+          let selectedIdx = 0;
+
+          const block = renderBlock(scroll, {
                type: 'tool',
                header: 'resume',
-               bodyHTML: `${html}<div style="margin-top:12px;color:var(--dim);font-size:12px">try <span style="color:var(--accent)">/resume --pdf</span> to download an ATS-friendly PDF</div>`,
+               meta: 'interactive',
+               bodyHTML: '',
           });
-     },
-};
+          const bodyCol = block.querySelector(".body-col");
 
+          function paint() {
+               const menuText = OPTIONS.map((opt, idx) => {
+                    if (idx === selectedIdx) {
+                         return `<span style="color:var(--accent);font-weight:bold">▶ ${opt}</span>`;
+                    }
+                    return `  <span style="color:var(--dim)">${opt}</span>`;
+               }).join('\n');
+               bodyCol.innerHTML = `How would you like to view the resume?\n\n${menuText}\n\n<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
+               
+               scroll.scrollTop = scroll.scrollHeight;
+          }
+
+          function cleanup() {
+               window.removeEventListener('keydown', onKey, true);
+               input.readOnly = false;
+               setTimeout(() => {
+                    input.focus();
+               }, 50);
+               resolve();
+          }
+
+          async function onKey(e) {
+               if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    selectedIdx = (selectedIdx + 1) % OPTIONS.length;
+                    paint();
+               } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (selectedIdx === 0) {
+                         const html = renderResumeTerminal(parsed);
+                         bodyCol.innerHTML = `${html}<div style="margin-top:12px;color:var(--dim);font-size:12px">try <span style="color:var(--accent)">/resume --pdf</span> to download an ATS-friendly PDF directly</div>`;
+                         cleanup();
+                    } else {
+                         bodyCol.innerHTML = `opening print dialog…`;
+                         cleanup();
+                         await pdf(parsed);
+                    }
+               } else if (e.key === 'Escape' || (e.key === 'c' && e.ctrlKey)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    bodyCol.innerHTML = `<span style="color:var(--dim)">selection cancelled. Type /resume to try again.</span>`;
+                    cleanup();
+               }
+          }
+
+          window.addEventListener('keydown', onKey, true);
+          paint();
+     }),
+};

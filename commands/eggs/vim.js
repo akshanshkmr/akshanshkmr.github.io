@@ -64,7 +64,9 @@ export default {
           function close() {
                modal.remove();
                window.removeEventListener('keydown', onKey, true);
-               input.focus();
+               setTimeout(() => {
+                    input.focus();
+               }, 50);
                resolve();
           }
 

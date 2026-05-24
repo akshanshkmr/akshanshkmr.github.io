@@ -104,7 +104,7 @@ export default {
           wrap.className = 'tool tool--tool';
           wrap.innerHTML = `
                <div class="tool-head">
-                    <span class="dot">⏺ </span><span class="name">snake</span><span class="meta"></span>
+                    <span class="dot">◆ </span><span class="name">snake</span><span class="meta"></span>
                </div>
                <div class="tool-body">
                     <span class="branch-col">     ⎿     </span>
@@ -170,7 +170,9 @@ export default {
           function cleanup() {
                clearInterval(timer);
                window.removeEventListener('keydown', onKey, true);
-               input.focus();
+               setTimeout(() => {
+                    input.focus();
+               }, 50);
           }
 
           window.addEventListener('keydown', onKey, true);

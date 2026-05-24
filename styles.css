@@ -1,18 +1,170 @@
-/* akshansh.codes — Claude Code TUI portfolio
-         Theme: warm dark (Tokyo-Night-ish base + Claude coral accent) */
+/* akshansh.codes — terminal portfolio
+         Themes: 11 curated, visually distinct palettes */
 
 :root {
-     --bg:                    #16161e;
-     --text:               #c5c8d6;
-     --dim:                #565869;
-     --very-dim:     #535670;
-     --accent:          #d97757;                         /* Claude coral */
-     --ok:                    #9ece6a;                         /* tool-call green */
-     --cyan:               #7dcfff;
-     --red:                #f7768e;
-     --selection: rgba(217, 119, 87, 0.25);
-     --font-mono: 'IBM Plex Mono', 'JetBrains Mono', 'Source Code Pro',
-                                       Menlo, Consolas, 'Courier New', monospace;
+     --bg:          #0f0f17;
+     --text:        #c8ccd8;
+     --dim:         #54566e;
+     --very-dim:    #404570;
+     --accent:      #4285F4;
+     --ok:          #34A853;
+     --cyan:        #8ab4f8;
+     --red:         #EA4335;
+     --selection:   rgba(66, 133, 244, 0.22);
+     --font-mono:   'IBM Plex Mono', 'JetBrains Mono', 'Source Code Pro',
+                    Menlo, Consolas, 'Courier New', monospace;
+}
+
+/* ── dark  (default — deep indigo, Google blue) ── */
+body.theme-dark {
+     --bg:          #0f0f17;
+     --text:        #c8ccd8;
+     --dim:         #54566e;
+     --very-dim:    #404570;
+     --accent:      #4285F4;
+     --ok:          #34A853;
+     --cyan:        #8ab4f8;
+     --red:         #EA4335;
+     --selection:   rgba(66, 133, 244, 0.22);
+}
+
+/* ── oled  (true-black, violet accent — distinct from dark) ── */
+body.theme-oled {
+     --bg:          #000000;
+     --text:        #e2e4f0;
+     --dim:         #555770;
+     --very-dim:    #1a1a2e;
+     --accent:      #a855f7;
+     --ok:          #34A853;
+     --cyan:        #c084fc;
+     --red:         #f87171;
+     --selection:   rgba(168, 85, 247, 0.22);
+}
+
+/* ── tokyo  (Tokyo Night — soft blue on near-black) ── */
+body.theme-tokyo {
+     --bg:          #16161e;
+     --text:        #c5c8d6;
+     --dim:         #565869;
+     --very-dim:    #535670;
+     --accent:      #7aa2f7;
+     --ok:          #9ece6a;
+     --cyan:        #7dcfff;
+     --red:         #f7768e;
+     --selection:   rgba(122, 162, 247, 0.22);
+}
+
+/* ── dracula  (classic — pink on deep charcoal) ── */
+body.theme-dracula {
+     --bg:          #282a36;
+     --text:        #f8f8f2;
+     --dim:         #6272a4;
+     --very-dim:    #44475a;
+     --accent:      #ff79c6;
+     --ok:          #50fa7b;
+     --cyan:        #8be9fd;
+     --red:         #ff5555;
+     --selection:   rgba(255, 121, 198, 0.25);
+}
+
+/* ── nord  (Arctic — icy teal on slate blue) ── */
+body.theme-nord {
+     --bg:          #2e3440;
+     --text:        #d8dee9;
+     --dim:         #4c566a;
+     --very-dim:    #3b4252;
+     --accent:      #88c0d0;
+     --ok:          #a3be8c;
+     --cyan:        #81a1c1;
+     --red:         #bf616a;
+     --selection:   rgba(136, 192, 208, 0.25);
+}
+
+/* ── gruvbox  (warm retro — amber on dark walnut) ── */
+body.theme-gruvbox {
+     --bg:          #282828;
+     --text:        #ebdbb2;
+     --dim:         #928374;
+     --very-dim:    #3c3836;
+     --accent:      #fabd2f;
+     --ok:          #b8bb26;
+     --cyan:        #83a598;
+     --red:         #fb4934;
+     --selection:   rgba(250, 189, 47, 0.2);
+}
+
+/* ── catppuccin  (Mocha — lavender-mauve on deep purple-black) ── */
+body.theme-catppuccin {
+     --bg:          #1e1e2e;
+     --text:        #cdd6f4;
+     --dim:         #6c7086;
+     --very-dim:    #313244;
+     --accent:      #cba6f7;
+     --ok:          #a6e3a1;
+     --cyan:        #89dceb;
+     --red:         #f38ba8;
+     --selection:   rgba(203, 166, 247, 0.2);
+}
+
+/* ── rose-pine  (love — dusty rose on midnight ink) ── */
+body.theme-rose-pine {
+     --bg:          #191724;
+     --text:        #e0def4;
+     --dim:         #6e6a86;
+     --very-dim:    #26233a;
+     --accent:      #eb6f92;
+     --ok:          #9ccfd8;
+     --cyan:        #c4a7e7;
+     --red:         #eb6f92;
+     --selection:   rgba(235, 111, 146, 0.2);
+}
+
+/* ── matrix  (hacker green on pure black) ── */
+body.theme-matrix {
+     --bg:          #000000;
+     --text:        #00e676;
+     --dim:         #1b5e20;
+     --very-dim:    #0a1f0a;
+     --accent:      #00ff41;
+     --ok:          #76ff03;
+     --cyan:        #00e5cc;
+     --red:         #ff1744;
+     --selection:   rgba(0, 255, 65, 0.2);
+}
+
+/* ── solarized  (Solarized Dark — the timeless classic) ── */
+body.theme-solarized {
+     --bg:          #002b36;
+     --text:        #839496;
+     --dim:         #657b83;
+     --very-dim:    #073642;
+     --accent:      #268bd2;
+     --ok:          #859900;
+     --cyan:        #2aa198;
+     --red:         #dc322f;
+     --selection:   rgba(38, 139, 210, 0.2);
+}
+
+/* ── light  (clean white — Google blue ink) ── */
+body.theme-light {
+     --bg:          #ffffff;
+     --text:        #1a1a2e;
+     --dim:         #5f6368;
+     --very-dim:    #dadce0;
+     --accent:      #1a73e8;
+     --ok:          #188038;
+     --cyan:        #1967d2;
+     --red:         #c5221f;
+     --selection:   rgba(26, 115, 232, 0.15);
+}
+body.theme-light .body-col code,
+body.theme-light .snake-grid-inline {
+     background: rgba(0, 0, 0, 0.05);
+}
+body.theme-light .banner {
+     background: linear-gradient(to right, var(--accent) 0%, #7c3aed 100%);
+     -webkit-background-clip: text;
+     background-clip: text;
 }
 
 * { box-sizing: border-box; }
@@ -57,11 +209,39 @@ body {
 /* ───────── banner ───────── */
 
 .banner {
-     color: var(--accent);
      font-size: 12px;
      line-height: 1.05;
      white-space: pre;
      margin: 6px 0 8px 8px;
+     /* CSS gradient clipped to text — left follows theme accent, right always purple */
+     background: linear-gradient(to right, var(--accent) 0%, #c084fc 100%);
+     -webkit-background-clip: text;
+     background-clip: text;
+     -webkit-text-fill-color: transparent;
+     color: transparent;
+     display: inline-block; /* needed for background-clip: text to work on pre */
+}
+/* '>' prefix: solid accent, overrides parent's transparent fill */
+.banner-gt {
+     -webkit-text-fill-color: var(--accent);
+     color: var(--accent);
+}
+
+/* ───────── init tips & context line ───────── */
+
+.init-tips {
+     font-size: 14px;
+     line-height: 1.7;
+     white-space: pre;
+     margin: 10px 0 4px 8px;
+     color: var(--text);
+}
+
+.init-ctx {
+     font-size: 13px;
+     white-space: pre;
+     margin: 2px 0 10px 8px;
+     color: var(--dim);
 }
 
 /* ───────── welcome-box (two-column boot screen) ───────── */
@@ -193,7 +373,33 @@ body {
      min-width: 0;
 }
 .prompt-form .gt { color: var(--accent); flex: 0 0 auto; }
+
+.input-suggest-wrap {
+     position: relative;
+     flex: 1 1 auto;
+     display: flex;
+     align-items: center;
+     min-width: 0;
+}
+
+.ghost-text {
+     position: absolute;
+     left: 0;
+     top: 0;
+     height: 100%;
+     width: 100%;
+     color: var(--dim);
+     font-family: var(--font-mono);
+     font-size: 15px;
+     line-height: 1.3;
+     pointer-events: none;
+     white-space: pre;
+     opacity: 0.75;
+}
+
 .prompt-input {
+     position: relative;
+     z-index: 2;
      flex: 1 1 auto;
      background: transparent;
      border: none;
@@ -207,6 +413,50 @@ body {
      min-width: 0;
 }
 .prompt-input::placeholder { color: var(--very-dim); }
+
+/* Quick Action HUD */
+.hud-panel {
+     display: flex;
+     align-items: center;
+     gap: 1.5ch;
+     margin-bottom: 6px;
+     padding: 2px 1ch;
+     font-size: 13px;
+     flex-wrap: wrap;
+}
+.hud-label {
+     color: var(--dim);
+     text-transform: uppercase;
+     font-size: 11px;
+     letter-spacing: 0.05em;
+     font-weight: bold;
+}
+.hud-btn {
+     background: rgba(255, 255, 255, 0.03);
+     border: 1px solid var(--very-dim);
+     border-radius: 3px;
+     color: var(--cyan);
+     font-family: var(--font-mono);
+     font-size: 12px;
+     padding: 2px 8px;
+     cursor: pointer;
+     transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.hud-btn:hover {
+     background: rgba(125, 207, 255, 0.1);
+     border-color: var(--cyan);
+     color: var(--text);
+}
+
+body.theme-github-light .hud-btn {
+     background: rgba(0, 0, 0, 0.02);
+     border-color: var(--very-dim);
+}
+body.theme-github-light .hud-btn:hover {
+     background: rgba(9, 105, 218, 0.08);
+     border-color: var(--accent);
+     color: var(--accent);
+}
 
 /* ───────── status bar ───────── */
 
@@ -242,25 +492,24 @@ body {
 }
 .toast--visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ───────── mobile fallback ───────── */
+/* ───────── responsive terminal (no mobile fallback — terminal shows on all viewports) ───────── */
 
-.mobile-fallback {
-     max-width: 600px;
-     margin: 0 auto;
-     padding: 24px;
-     color: var(--text);
-     font-family: var(--font-mono);
-     font-size: 14px;
-     line-height: 1.5;
-}
-.mobile-fallback h1 { color: var(--accent); margin-top: 0; }
-.mobile-fallback h2 { color: var(--accent); font-size: 16px; }
-.mobile-fallback a { color: var(--cyan); }
-
-@media (max-width: 600px) {
+/* Small screens: keep terminal visible, shrink banner so it doesn't overflow */
+@media (max-width: 700px) {
      html, body { overflow: auto; }
-     .scroll, .prompt-wrap, .statusbar { display: none; }
-     .mobile-fallback { display: block !important; }
+     .scroll { padding: 4px 6px 0 6px; white-space: normal; }
+     .banner { font-size: 7px; line-height: 1.05; margin: 4px 0 8px 4px; }
+     .init-tips { font-size: 13px; margin: 8px 0 4px 4px; }
+     .init-ctx  { font-size: 12px; margin: 2px 0 8px 4px; }
+     .prompt-wrap { padding: 0 4px 2px 4px; }
+     .statusbar { font-size: 12px; padding: 4px 8px 6px 8px; }
+     /* Bigger tap target on the input */
+     .prompt-input { font-size: 16px; } /* 16px prevents iOS zoom-on-focus */
+}
+
+/* Very small (≤380px): hide status bar to save space */
+@media (max-width: 380px) {
+     .statusbar { display: none; }
 }
 
 /* ───────── snake (inline, scroll-integrated) ───────── */
@@ -337,4 +586,13 @@ body {
 
 .matrix-overlay { position: fixed; inset: 0; background: var(--bg); overflow: hidden; z-index: 100; }
 .matrix-canvas { width: 100%; height: 100%; display: block; }
+
+/* ───────── barrel-roll easter egg ───────── */
+body.barrel-rolling {
+     animation: barrelRoll 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes barrelRoll {
+     from { transform: rotate(0deg); }
+     to { transform: rotate(360deg); }
+}
 

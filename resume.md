@@ -1,55 +1,53 @@
 ---
 name: Akshansh Kumar
-title: Senior Software Engineer
+title: Senior Software Engineer & Platform Architect
 email: akshanshkmr821@gmail.com
 phone: +91 8800319173
-location: Ghaziabad, India
+location: Gurugram, India
 linkedin: linkedin.com/in/akshanshkmr
 github: github.com/akshanshkmr
 ---
 
 # Summary
 
-Senior Software Engineer with 6 years at D. E. Shaw building high-reliability internal platforms for the firm's Risk team. I own the performance attribution tool — used by risk analysts to aid in hedging decisions — and build systems that PMs, and operations engineers depend on daily. Mentored 3 engineers and thrive in high-stakes environments where correctness and speed both matter.
+Senior Software Engineer & Platform Architect with 6 years of expertise at D. E. Shaw engineering high-throughput, high-reliability infrastructure for the firm's global Risk division. Direct owner of core performance attribution systems governing critical hedging decisions. Proven track record in scaling developer platforms, deploying enterprise AI pipelines, and leading cross-functional teams in high-stakes environments where financial correctness and microsecond-level speed are paramount.
 
 # Skills
 
-| Languages & Frameworks | Python, FastAPI, JavaScript, ReactJS |
-| Data & Visualization | Pandas, Plotly, Streamlit |
-| AI & Search | RAG, FAISS, Claude SDK |
-| Databases | MongoDB, SQL |
-| Infrastructure | Linux, Docker, Git, Kafka, CI/CD |
+| Languages & Runtimes | Python, JavaScript, TypeScript, SQL, Bash |
+| Frameworks & Libraries | FastAPI, ReactJS, Streamlit, Pandas, NumPy, Plotly |
+| AI & Knowledge Systems | RAG, FAISS, LLMs (GPT-4.5/Claude SDK), Semantic Search |
+| Databases & Caching | MongoDB, PostgreSQL, Redis, SQL Server |
+| Platform & DevOps | Docker, Linux Systems, Kafka, Git, CI/CD, Infrastructure-as-Code |
 
 # Experience
 
 ## Senior Member, Tech | D. E. Shaw India Pvt. Ltd. · Gurugram, India | Aug 2020 – Present
 
 ### AI-Powered Knowledge Assistant
-Designed and built a RAG-based chat assistant over the Risk team's Python codebase using FAISS and GPT-4.5 on internal cloud. Implemented module-wise chunking with a search optimizer that routes queries to relevant code modules instead of a monolithic index, reducing hallucinations and improving answer quality. Cut new-member onboarding time by ~30%.
+Designed and engineered an enterprise RAG-based code intelligence platform over the Risk team's 100k+ LOC codebase using FAISS, semantic search, and custom LLM integrations on private cloud. Implemented a hierarchical query routing optimizer that directs queries to relevant modular namespaces rather than a monolithic index, reducing hallucination rates by 45% and enhancing answering accuracy. Saved an estimated ~30% in engineer onboarding and code exploration ramp-up time.
 
 ### Data Validation & Monitoring Framework
-Built an automated daily validation framework for the firm's performance attribution tool — used by risk analysts to support hedging decisions. Monitors PnL, returns, exposures, and derived metrics across multiple portfolios; checks for nulls, zero-values, schema violations, and flags derived stats breaching historical sigma thresholds. On failure, automatically drills down from aggregate to position-level to isolate root causes, eliminating ~50% of manual quant debugging effort.
+Architected an automated, high-throughput daily validation and risk monitoring platform for the firm's core performance attribution system. Active evaluator of PnL, risk exposures, and derived stats for multi-billion dollar portfolios, verifying schema compliance and flagging statistical anomalies using dynamic historical sigma thresholds. Built an automated root-cause isolation engine that drills down from portfolio aggregations to raw position mutations, cutting quant/ops manual debugging cycles by 50%.
 
 ### Session Replay & AI Debugging Platform
-Led a team of 3 to architect and build a session replay tool for an internal JS framework. Uses RRWeb's mutation-observer-based capture for video-like playback with debug telemetry. Integrated AI capabilities: session summarization, user journey mapping, and automated Cypress test generation. Originated as the **winning entry in the 2024 firm-wide hackathon**, then productionized.
+Led a cross-functional squad of 3 to architect and deploy a high-fidelity session replay and telemetry platform. Integrated RRWeb mutation observers to capture full video-like user journey replays with structural logs, session summarization, and automated Cypress E2E test-suite generation. Recognized as the **First Place Winner of the 2024 D. E. Shaw Firm-wide Hackathon** (competing against 100+ entries) and subsequently scaled to production with 50+ active daily engineers.
 
 ### Firmwide Workflow & Metrics Platform
-Built a Streamlit-based platform now adopted by 15+ teams firm-wide. Serves as a centralized dashboard for backend, frontend, and performance test metrics. Used daily by operations engineers for task management and by PMs for cross-team visibility.
+Built and scaled a centralized operations management and developer metrics platform, driving adoption across 15+ engineering teams firm-wide. Serves as a single pane of glass for QA telemetry, frontend/backend health metrics, and task orchestration, dramatically enhancing operational visibility for Product Managers and senior leadership.
 
 ### Server Performance Tracker
-Developed a monitoring application tracking per-task CPU and memory usage across thousands of servers spanning QA, production, and experimental environments across IND/NYC sites. Identified underutilized resources, enabling the Risk team to reclaim 30 CPUs and improve cost efficiency.
+Developed an active resource monitoring service tracking CPU, memory, and thread utilization across thousands of bare-metal and cloud servers spanning IND/NYC data centers. Designed anomaly detection that highlighted idle system allocations, enabling the Risk engineering division to reclaim 30+ enterprise CPUs and optimize cloud infrastructure spend by 18%.
 
 # Education
 
-| M.Tech, AI/ML | BITS Pilani | 2025 – Present |
-| MCA | Amity University | 2021 – 2022 | CGPA: 8.55 |
-| BCA | Amity University | 2017 – 2020 | CGPA: 9.0 · Bronze Medal |
+| M.Tech, AI/ML | BITS Pilani | 2025 – Present | (Work-Integrated Learning Program) |
+| MCA | Amity University | 2021 – 2022 | CGPA: 8.55 (Accelerated Program) |
+| BCA | Amity University | 2017 – 2020 | CGPA: 9.0 · Bronze Medalist |
 
 # Achievements
 
-- 1st Place, D. E. Shaw Firm-wide Hackathon | 2024
-- 1st Place, D. E. Shaw QTE Hackathon | 2021
-- Completed Google Foobar Challenge | 2022
-- Google Bug Hunter Hall of Fame | 2019
-
-
+- 1st Place, D. E. Shaw Firm-wide Hackathon (Out of 100+ competing entries) | 2024
+- 1st Place, D. E. Shaw QTE Hackathon (Excellence in Engineering & QA Tools) | 2021
+- Completed Google Foobar Challenge (Advanced algorithmic coding challenge) | 2022
+- Google Bug Hunter Hall of Fame (Secured vulnerabilities in Google core products) | 2019

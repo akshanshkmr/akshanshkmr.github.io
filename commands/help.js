@@ -1,17 +1,15 @@
 const ITEMS = [
-     ['/about', 'who I am'],
-     ['/projects', 'list projects (try /projects <name> for deep-dive)'],
-     ['/skills', 'languages, frameworks, tools'],
-     ['/experience', 'work history and education'],
-     ['/contact', 'how to reach me'],
-     ['/resume', 'view full resume (--pdf to download)'],
-     ['/share', 'copy current URL'],
-     ['/clear', 'wipe the scroll'],
-     ['/snake', 'play snake'],
-     ['/init', 'redraw the boot screen'],
+     ['/resume', 'explore Akshansh\'s resume (interactive menu)'],
+     ['/theme', 'change terminal color theme (interactive menu)'],
+     ['/key', 'configure Gemini API key for AI chat'],
+     ['/share', 'copy current URL to clipboard'],
+     ['/clear', 'wipe the scroll buffer'],
+     ['/snake', 'play snake in the console'],
+     ['/help', 'list available commands'],
+     ['[text]', 'type any question to chat with AI persona directly'],
 ];
 
-const EGGS = '/sudo     /vim     /coffee     /matrix     /whoami';
+const EGGS = '/sudo     /vim     /matrix     /whoami     /dino     /barrel-roll';
 
 export default {
      name: 'help',

@@ -41,12 +41,12 @@ export function renderEcho(scroll, raw) {
 }
 
 /**
-    * Render a Claude Code-style tool block:
-    *      ⏺ name(meta · 0.2s)
+    * Render a Gemini CLI-style tool block:
+    *      ◆ name(meta · 0.2s)
     *           ⎿     body...
     *
     * options: { type: 'tool' | 'error', header, meta, count, durationMs, bodyHTML, bodyText }
-    *      - type: 'tool' (green ⏺) or 'error' (red ⏺)
+    *      - type: 'tool' (blue ◆) or 'error' (red ◆)
     *      - header: name shown after the dot (e.g., "list_projects", "command not found")
     *      - meta: free-text inside the parens (e.g., "banana", "ai-knowledge-assistant · 2024")
     *      - count: integer that adds "(N results)" to the parens
@@ -72,7 +72,7 @@ export function renderBlock(scroll, options) {
      head.className = 'tool-head';
      const dot = document.createElement('span');
      dot.className = 'dot';
-     dot.textContent = '⏺ ';
+     dot.textContent = '◆ ';
      const name = document.createElement('span');
      name.className = 'name';
      name.textContent = header || '';
@@ -108,7 +108,7 @@ export function renderBlock(scroll, options) {
 }
 
 /**
-    * Render a Claude-Code-style bordered box (used for the welcome screen).
+    * Render a bordered box (used for the welcome screen).
     * Built entirely from box-drawing characters in a <pre>, so corners, sides,
     * and edges all sit on the same monospace character grid — pixel-perfect.
     *
@@ -182,7 +182,7 @@ export function renderBanner(scroll, art) {
 }
 
 /**
-    * Render a Claude-Code-style two-column welcome box:
+    * Render a two-column welcome box:
     *
     *      ╭─── label ─────────...─╮
     *      │     left col centered          │     right col left-aligned │

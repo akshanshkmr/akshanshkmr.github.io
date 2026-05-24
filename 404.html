@@ -1,28 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-     <head>
-          <meta charset="UTF-8" />
-          <title>akshansh.codes</title>
-          <script>
-               // GitHub Pages SPA fallback encoder.
-               // Any deep link (e.g. /repo/projects/replay) lands here, gets encoded
-               // into the index.html querystring, and is decoded by the snippet in
-               // index.html before shell.js runs. Standard rafgraph/spa-github-pages trick.
-               //
-               // pathSegmentsToKeep: 0 for custom domains and user.github.io root,
-               //                                                   1 for project pages at user.github.io/<repo>/.
-               var pathSegmentsToKeep = 1;
+  <head>
+    <meta charset="UTF-8" />
+    <title>akshansh.codes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <script>
+      // GitHub Pages SPA fallback encoder.
+      // Any deep link (e.g. /resume, /projects) lands here, gets encoded
+      // into the index.html querystring, and decoded by the snippet in
+      // index.html before shell.js runs. Standard rafgraph/spa-github-pages trick.
+      //
+      // pathSegmentsToKeep: 0 for custom domains and user.github.io root,
+      //                      1 for project pages at user.github.io/<repo>/.
+      var pathSegmentsToKeep = 1;
 
-               var l = window.location;
-               l.replace(
-                    l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-                    l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-                    l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-                    (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-                    l.hash,
-               );
-          </script>
-     </head>
-     <body></body>
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash,
+      );
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:      #0f0f17;
+        --text:    #c8ccd8;
+        --dim:     #54566e;
+        --accent:  #4285F4;
+        --ok:      #34A853;
+        --red:     #EA4335;
+      }
+
+      html, body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'IBM Plex Mono', 'JetBrains Mono', Menlo, monospace;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      /* subtle animated grid background */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(66,133,244,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(66,133,244,0.04) 1px, transparent 1px);
+        background-size: 32px 32px;
+        pointer-events: none;
+        animation: gridDrift 20s linear infinite;
+      }
+      @keyframes gridDrift {
+        from { transform: translateY(0); }
+        to   { transform: translateY(32px); }
+      }
+
+      .container {
+        position: relative;
+        text-align: center;
+        padding: 40px 24px;
+        max-width: 520px;
+        width: 100%;
+      }
+
+      /* ── ✦ logo ── */
+      .logo {
+        font-size: 48px;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 16px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1;   transform: scale(1); }
+        50%       { opacity: 0.5; transform: scale(0.92); }
+      }
+
+      /* ── site name ── */
+      .site-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.06em;
+        margin-bottom: 28px;
+      }
+
+      /* ── terminal-style redirect box ── */
+      .box {
+        border: 1px solid #2a2a3a;
+        padding: 20px 24px;
+        text-align: left;
+        background: rgba(255,255,255,0.02);
+        border-radius: 2px;
+        margin-bottom: 20px;
+      }
+
+      .box-line {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        font-size: 13px;
+        line-height: 1.9;
+      }
+      .box-line .gt    { color: var(--accent); flex-shrink: 0; }
+      .box-line .label { color: var(--dim); }
+      .box-line .val   { color: var(--text); }
+      .box-line .ok    { color: var(--ok); }
+      .box-line .err   { color: var(--red); }
+
+      /* ── animated dots ── */
+      .dots::after {
+        content: '';
+        animation: dots 1.4s steps(4, end) infinite;
+      }
+      @keyframes dots {
+        0%   { content: ''; }
+        25%  { content: '.'; }
+        50%  { content: '..'; }
+        75%  { content: '...'; }
+        100% { content: ''; }
+      }
+
+      /* ── progress bar ── */
+      .progress-wrap {
+        height: 2px;
+        background: #1e1e2e;
+        border-radius: 1px;
+        overflow: hidden;
+        margin: 16px 0 0;
+      }
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(to right, var(--accent), #c084fc);
+        animation: progress 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        transform-origin: left;
+      }
+      @keyframes progress {
+        from { width: 0%; }
+        to   { width: 100%; }
+      }
+
+      /* ── fallback link ── */
+      .fallback {
+        font-size: 12px;
+        color: var(--dim);
+        margin-top: 16px;
+      }
+      .fallback a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .fallback a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <span class="logo">✦</span>
+      <div class="site-name">akshansh.codes</div>
+
+      <div class="box">
+        <div class="box-line">
+          <span class="gt">&gt;</span>
+          <span class="label">status</span>
+          <span class="err">404 — route not found</span>
+        </div>
+        <div class="box-line">
+          <span class="gt">&gt;</span>
+          <span class="label">path  </span>
+          <span class="val" id="req-path">/</span>
+        </div>
+        <div class="box-line">
+          <span class="gt">&gt;</span>
+          <span class="label">action</span>
+          <span class="ok">redirecting to terminal<span class="dots"></span></span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+
+      <p class="fallback">
+        Not redirecting?
+        <a href="/">go to akshansh.codes &rarr;</a>
+      </p>
+    </div>
+
+    <script>
+      // Show the attempted path
+      var reqPath = document.getElementById('req-path');
+      if (reqPath) {
+        reqPath.textContent = window.location.pathname || '/';
+      }
+    </script>
+  </body>
 </html>
-

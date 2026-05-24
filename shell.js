@@ -13,21 +13,20 @@ import {
 } from "./shell/render.js";
 
 import help from "./commands/help.js";
-import about from "./commands/about.js";
-import projects from "./commands/projects.js";
-import skills from "./commands/skills.js";
-import experience from "./commands/experience.js";
-import contact from "./commands/contact.js";
 import resume from "./commands/resume.js";
 import clear from "./commands/clear.js";
 import share from "./commands/share.js";
 import snake from "./commands/snake.js";
+import theme from "./commands/theme.js";
 import sudo from "./commands/eggs/sudo.js";
 import vim from "./commands/eggs/vim.js";
-import coffee from "./commands/eggs/coffee.js";
 import matrix from "./commands/eggs/matrix.js";
 import init, { BANNER_ART } from "./commands/eggs/ascii.js";
 import whoami from "./commands/eggs/whoami.js";
+import dino from "./commands/eggs/dino.js";
+import barrelRoll from "./commands/eggs/barrel-roll.js";
+import handleChatFallback from "./commands/chat.js";
+import key from "./commands/key.js";
 
 async function loadResume() {
   const res = await fetch("./resume.md", { cache: "no-store" });
@@ -39,21 +38,19 @@ function buildRegistry() {
   const r = new Registry();
   for (const cmd of [
     help,
-    about,
-    projects,
-    skills,
-    experience,
-    contact,
     resume,
     clear,
     share,
     snake,
+    theme,
     sudo,
     vim,
-    coffee,
     matrix,
     init,
     whoami,
+    dino,
+    barrelRoll,
+    key,
   ]) {
     r.register(cmd);
   }
@@ -84,43 +81,40 @@ function setupMobileFallback(resume) {
 }
 
 function renderInitial(scroll) {
+  // ASCII art with "> " on first line, indent on rest
+  const lines = BANNER_ART.split('\n');
+  const bannerText = lines.map((l, i) => (i === 0 ? l : '  ' + l)).join('\n');
+
+  const bannerEl = document.createElement('pre');
+  bannerEl.className = 'banner';
+  // The '>' gets its own span so it can have a solid accent color
+  // while the rest of the banner uses the CSS gradient
+  bannerEl.innerHTML = `<span class="banner-gt">&gt;</span> ${bannerText}`;
+  scroll.appendChild(bannerEl);
+
+  // ── Tips ──
+  const dim    = (s) => `<span style="color:var(--dim)">${s}</span>`;
   const accent = (s) => `<span style="color:var(--accent)">${s}</span>`;
-  const dimC = (s) => `<span style="color:var(--dim)">${s}</span>`;
-  const veryDim = (s) => `<span style="color:var(--very-dim)">${s}</span>`;
 
-  const bannerLines = BANNER_ART.split("\n").map((l) => accent(l));
-
-  renderWelcomeBox(scroll, {
-    label: `${accent("akshansh.codes")} ${dimC("v1.0")}`,
-    labelText: "akshansh.codes v1.0",
-    totalWidth: 117,
-    leftWidth: 47,
-    topLines: ["", ...bannerLines, ""],
-    leftLines: [
-      "Welcome!",
-      "",
-      dimC("Senior Software Engineer"),
-      dimC("D.E. Shaw · 6 years"),
-      "",
-      "",
-      dimC("~/akshansh"),
-    ],
-    rightLines: [
-      accent("Tips for getting started"),
-      `Run ${accent("/help")} to see all commands`,
-      veryDim("─".repeat(65)),
-      accent("Latest"),
-      `${accent("/resume")}          view full resume`,
-      `${accent("/projects")}     see what I've built`,
-      `${accent("/snake")}           play snake`,
-    ],
-  });
+  const tipsEl = document.createElement('pre');
+  tipsEl.className = 'init-tips';
+  tipsEl.innerHTML = [
+    `<span style="color:var(--text)">Tips for getting started:</span>`,
+    `${dim('1.')} ${accent('/help')}    ${dim('for a list of all commands.')}`,
+    `${dim('2.')} ${accent('/resume')}  ${dim('explore my background & print a PDF.')}`,
+    `${dim('3.')} ${accent('/key')}     ${dim('set up AI chat, then ask me anything.')}`,
+  ].join('\n');
+  scroll.appendChild(tipsEl);
 }
 
 async function main() {
   const scroll = document.getElementById("scroll");
   const promptForm = document.getElementById("prompt");
   const input = document.getElementById("prompt-input");
+
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.body.className = ""; // clear previous themes
+  document.body.classList.add(`theme-${savedTheme}`);
 
   renderInitial(scroll);
 
@@ -160,50 +154,125 @@ async function main() {
     await dispatch(initial);
   }
 
+  const ghostText = document.getElementById("ghost-text");
+
+  function updateAutosuggest() {
+    const val = input.value;
+    if (!val) {
+      ghostText.textContent = "";
+      return;
+    }
+    if (val.startsWith("/")) {
+      const typed = val.slice(1).toLowerCase();
+      if (!typed.includes(" ")) {
+        const matches = registry.completions(typed);
+        if (matches.length > 0) {
+          ghostText.textContent = "/" + matches[0];
+          return;
+        }
+      }
+    }
+    ghostText.textContent = "";
+  }
+
+  input.addEventListener("input", updateAutosuggest);
+
   promptForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const raw = input.value;
     input.value = "";
-    const parsed = parseInput(raw);
-    if (parsed === null) return;
+    ghostText.textContent = "";
+
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+
+    const parsed = parseInput(trimmed);
+    const cmdName = parsed ? parsed.name : "";
+    const isSlash = trimmed.startsWith("/");
+    const isRegistered = !!registry.get(cmdName);
+
     history.push(raw);
     renderEcho(scroll, raw);
-    await dispatch(parsed);
+
+    if (isSlash || isRegistered) {
+      if (cmdName === "chat") {
+        let query = trimmed.slice(5).trim();
+        if (query.startsWith("/")) query = query.slice(1).trim();
+        
+        const apiKey = localStorage.getItem('gemini_api_key');
+        if (!apiKey) {
+          renderBlock(scroll, {
+            type: 'error',
+            header: 'chat',
+            meta: 'key missing',
+            bodyText: 'Gemini API Key is not configured. Redirecting to interactive key setup…',
+          });
+          await registry.dispatch({ name: 'key', args: [] }, ctx);
+        } else {
+          await handleChatFallback(query || "hello", ctx);
+        }
+      } else {
+        await dispatch(parsed);
+      }
+    } else {
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey) {
+        renderBlock(scroll, {
+          type: 'error',
+          header: 'chat',
+          meta: 'key missing',
+          bodyText: 'Gemini API Key is not configured. Redirecting to interactive key setup…',
+        });
+        await registry.dispatch({ name: 'key', args: [] }, ctx);
+      } else {
+        await handleChatFallback(trimmed, ctx);
+      }
+    }
   });
 
-  input.addEventListener("keydown", (e) => {
+  input.addEventListener("keydown", async (e) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
       const h = history.prev();
-      if (h !== null) input.value = h;
+      if (h !== null) {
+        input.value = h;
+        updateAutosuggest();
+      }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       const h = history.next();
-      if (h !== null) input.value = h;
+      if (h !== null) {
+        input.value = h;
+        updateAutosuggest();
+      }
+    } else if (e.key === "ArrowRight") {
+      // Complete autosuggest if cursor is at the end
+      if (input.selectionStart === input.value.length && ghostText.textContent) {
+        e.preventDefault();
+        input.value = ghostText.textContent;
+        updateAutosuggest();
+      }
     } else if (e.key === "Tab") {
       e.preventDefault();
-      handleTab(input, registry, scroll);
+      if (ghostText.textContent && input.value !== ghostText.textContent) {
+        input.value = ghostText.textContent;
+        updateAutosuggest();
+      } else {
+        handleTab(input, registry, scroll);
+        updateAutosuggest();
+      }
     } else if (e.key === "l" && e.ctrlKey) {
       e.preventDefault();
       clearScroll(scroll);
       renderInitial(scroll);
+      ghostText.textContent = "";
     }
-  });
-
-  scroll.addEventListener("click", async (e) => {
-    const link = e.target.closest(".project-name");
-    if (!link) return;
-    e.preventDefault();
-    const slug = link.dataset.slug;
-    const parsed = { name: "projects", args: [slug] };
-    renderEcho(scroll, `/projects ${slug}`);
-    await dispatch(parsed);
   });
 
   document.addEventListener("click", (e) => {
     if (
       e.target.closest(
-        "a, button, .project-name, .snake-overlay, .vim-modal, input",
+        "a, button, .snake-overlay, .vim-modal, input",
       )
     )
       return;
