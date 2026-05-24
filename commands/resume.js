@@ -174,9 +174,11 @@ export default {
                     if (selectedIdx === 0) {
                          const html = renderResumeTerminal(parsed);
                          bodyCol.innerHTML = `${html}<div style="margin-top:12px;color:var(--dim);font-size:12px">try <span style="color:var(--accent)">/resume --pdf</span> to download an ATS-friendly PDF directly</div>`;
+                         scroll.scrollTop = scroll.scrollHeight;
                          cleanup();
                     } else {
                          bodyCol.innerHTML = `opening print dialog…`;
+                         scroll.scrollTop = scroll.scrollHeight;
                          cleanup();
                          await pdf(parsed);
                     }
@@ -184,6 +186,7 @@ export default {
                     e.preventDefault();
                     e.stopPropagation();
                     bodyCol.innerHTML = `<span style="color:var(--dim)">selection cancelled. Type /resume to try again.</span>`;
+                    scroll.scrollTop = scroll.scrollHeight;
                     cleanup();
                }
           }

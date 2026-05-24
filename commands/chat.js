@@ -131,6 +131,7 @@ Example response:
           }
 
           bodyCol.innerHTML = markdownToHtml(cleanedText);
+          scroll.scrollTop = scroll.scrollHeight;
 
           if (commandToRun) {
                const rawCmd = commandToRun.startsWith('/') ? commandToRun : '/' + commandToRun;
@@ -153,5 +154,6 @@ Example response:
           }
      } catch (err) {
           bodyCol.innerHTML = `<span style="color:var(--red)">error calling Gemini API: ${err.message}</span>`;
+          scroll.scrollTop = scroll.scrollHeight;
      }
 }

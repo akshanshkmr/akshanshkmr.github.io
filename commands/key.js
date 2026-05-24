@@ -60,11 +60,13 @@ export default {
                     showToast('✓ API key saved');
                     bodyCol.innerHTML = `<span style="color:var(--ok)">✓ Gemini API key is valid and configured successfully!</span>\n\n` +
                                         `You can now chat with Akshansh's AI Persona by typing any question directly into the prompt.`;
+                    scroll.scrollTop = scroll.scrollHeight;
                     resolve();
                }).catch((err) => {
                     bodyCol.innerHTML = `<span style="color:var(--red)">error: Gemini API key validation failed!</span>\n\n` +
                                         `Reason: <span style="color:var(--red)">${err.message}</span>\n\n` +
                                         `Please get a valid key from Google AI Studio and try again.`;
+                    scroll.scrollTop = scroll.scrollHeight;
                     resolve();
                });
                return;
@@ -128,9 +130,11 @@ export default {
                     localStorage.removeItem('gemini_api_key');
                     showToast('✓ API key cleared');
                     bodyCol.innerHTML = `<span style="color:var(--dim)">API key cleared successfully.</span>`;
+                    scroll.scrollTop = scroll.scrollHeight;
                     cleanup();
                } else {
                     bodyCol.innerHTML = `<span style="color:var(--dim)">Interactive key setup cancelled.</span>`;
+                    scroll.scrollTop = scroll.scrollHeight;
                     cleanup();
                }
           }
@@ -167,15 +171,18 @@ export default {
                          localStorage.removeItem('gemini_api_key');
                          showToast('✓ API key cleared');
                          bodyCol.innerHTML = `<span style="color:var(--dim)">API key cleared successfully.</span>`;
+                         scroll.scrollTop = scroll.scrollHeight;
                          cleanup();
                     } else {
                          bodyCol.innerHTML = `<span style="color:var(--dim)">Interactive key setup cancelled.</span>`;
+                         scroll.scrollTop = scroll.scrollHeight;
                          cleanup();
                     }
                } else if (e.key === 'Escape' || (e.key === 'c' && e.ctrlKey)) {
                     e.preventDefault();
                     e.stopPropagation();
                     bodyCol.innerHTML = `<span style="color:var(--dim)">Interactive key setup cancelled.</span>`;
+                    scroll.scrollTop = scroll.scrollHeight;
                     cleanup();
                }
           }
@@ -204,6 +211,7 @@ export default {
 
                          if (pastedKey) {
                               bodyCol.innerHTML = `<span style="color:var(--cyan)">testing API key validity…</span>`;
+                              scroll.scrollTop = scroll.scrollHeight;
                               
                               testApiKey(pastedKey).then(() => {
                                    localStorage.setItem('gemini_api_key', pastedKey);
@@ -215,15 +223,18 @@ export default {
                                         
                                    bodyCol.innerHTML = `<span style="color:var(--ok)">✓ Gemini API key is valid and configured successfully! (saved as ${masked})</span>\n\n` +
                                                        `You can now chat with Akshansh's AI Persona by typing any question directly into the prompt.`;
+                                   scroll.scrollTop = scroll.scrollHeight;
                                    resolve();
                               }).catch((err) => {
                                    bodyCol.innerHTML = `<span style="color:var(--red)">error: Gemini API key validation failed!</span>\n\n` +
                                                        `Reason: <span style="color:var(--red)">${err.message}</span>\n\n` +
                                                        `Your key was NOT saved. Please enter a valid key from Google AI Studio.`;
+                                   scroll.scrollTop = scroll.scrollHeight;
                                    resolve();
                               });
                          } else {
                               bodyCol.innerHTML = `<span style="color:var(--dim)">No key entered. Setup cancelled.</span>`;
+                              scroll.scrollTop = scroll.scrollHeight;
                               resolve();
                          }
                     } else if (e.key === 'Escape') {
@@ -238,6 +249,7 @@ export default {
                          input.focus();
                          
                          bodyCol.innerHTML = `<span style="color:var(--dim)">Interactive key setup cancelled.</span>`;
+                         scroll.scrollTop = scroll.scrollHeight;
                          resolve();
                     }
                }
