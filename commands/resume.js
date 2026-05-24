@@ -25,51 +25,14 @@ async function pdf(parsed) {
           'position:fixed;left:-9999px;top:0;width:210mm;height:297mm;border:0;';
      document.body.appendChild(iframe);
 
-     const doc = iframe.contentDocument || iframe.contentWindow.document;
-     doc.open();
-     doc.write(`<!DOCTYPE html>
-<html>
-<head>
-     <meta charset="UTF-8">
-     <title>Akshansh Kumar — Resume</title>
-     <link rel="stylesheet" href="${fontHref}">
-     <style>${baseCss}</style>
-     <style>
-          *, *::before, *::after {
-               -webkit-print-color-adjust: exact !important;
-               print-color-adjust: exact !important;
-          }
-
-          html, body { margin: 0; background: white; }
-          body { font-family: 'Inter', -apple-system, system-ui, sans-serif; }
-
-          @page { size: A4; margin: 12mm 15mm; }
-
-          /* Print overrides for iframe context */
-          .resume {
-               background: white !important;
-               border: none !important;
-               padding: 0 !important;
-               max-width: none !important;
-          }
-
-          /* Page breaks: keep individual jobs/projects/edu entries together,
-                   but allow sections themselves to split between items. */
-          .resume .r-proj,
-          .resume .r-edu,
-          .resume .r-ach li,
-          .resume .r-head { break-inside: avoid; page-break-inside: avoid; }
-          .resume h2, .resume h3, .resume h4 { break-after: avoid; page-break-after: avoid; }
-     </style>
-</head>
-<body>
-     <div class="resume">${html}</div>
-</body>
-</html>`);
-     doc.close();
-
      return new Promise((resolve) => {
+          let triggered = false;
+          let timeoutId = null;
+
           function triggerPrint() {
+               if (triggered) return;
+               triggered = true;
+               if (timeoutId) clearTimeout(timeoutId);
                try {
                     iframe.contentWindow.focus();
                     iframe.contentWindow.print();
@@ -87,6 +50,55 @@ async function pdf(parsed) {
                if (fonts && fonts.ready) fonts.ready.then(triggerPrint);
                else setTimeout(triggerPrint, 500);
           });
+
+          // Fallback timeout in case browser load event is bypassed
+          timeoutId = setTimeout(triggerPrint, 1500);
+
+          try {
+               const doc = iframe.contentDocument || iframe.contentWindow.document;
+               doc.open();
+               doc.write(`<!DOCTYPE html>
+<html>
+<head>
+     <meta charset="UTF-8">
+     <title>Akshansh Kumar — Resume</title>
+     <link rel="stylesheet" href="${fontHref}">
+     <style>${baseCss}</style>
+     <style>
+          *, *::before, *::after {
+               -webkit-print-color-adjust: exact !important;
+               print-color-adjust: exact !important;
+          }
+
+           html, body { margin: 0; background: white; }
+           body { font-family: 'Inter', -apple-system, system-ui, sans-serif; }
+
+           @page { size: A4; margin: 0; }
+
+           /* Print overrides for iframe context */
+           .resume {
+                border: none !important;
+                max-width: none !important;
+           }
+
+          /* Page breaks: keep individual jobs/projects/edu entries together,
+                   but allow sections themselves to split between items. */
+          .resume .r-proj,
+          .resume .r-edu,
+          .resume .r-ach li,
+          .resume .r-head { break-inside: avoid; page-break-inside: avoid; }
+          .resume h2, .resume h3, .resume h4 { break-after: avoid; page-break-after: avoid; }
+     </style>
+</head>
+<body>
+     <div class="resume">${html}</div>
+</body>
+</html>`);
+               doc.close();
+          } catch (err) {
+               console.error('Error writing to iframe', err);
+               triggerPrint();
+          }
      });
 }
 
