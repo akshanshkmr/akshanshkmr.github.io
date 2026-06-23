@@ -6,7 +6,7 @@ A premium, Claude Code TUI-style interactive terminal personal portfolio website
 
 - **Interactive Command Surface**: Unified keyboard-driven `/resume` and `/theme` selections.
 - **Direct-Text AI Chatbot**: Type any natural language question directly in the prompt to chat with Akshansh's AI Persona (powered securely client-side by Gemini 2.5 Flash via a Bring-Your-Own-Key model).
-- **Embedded Easter Eggs**: `/dino` (console cactus-runner), `/snake`, `/barrel-roll`, `/matrix`, `/whoami`, `/coffee`, `/vim`, `/sudo`.
+- **Embedded Easter Eggs**: `/dino` (console cactus-runner), `/snake`, `/barrel-roll`, `/matrix`, `/whoami`, `/vim`, `/sudo`.
 - **Keyboard Shortcuts**: Arrow up/down command history, Tab/ArrowRight autocompletion, and `Ctrl+L` to clear.
 - **ATS-Friendly Print Variant**: Clean modern slate PDF download available in `/resume` printing configurations.
 
@@ -29,4 +29,4 @@ Because this is a modern ES module static application, you must run it through a
 
 ## Deploying
 
-Simply commit and push your changes to `main`. The included GitHub Action workflow `.github/workflows/deploy.yml` automatically builds and deploys the static files to GitHub Pages.
+Simply commit and push your changes to `main`. The included GitHub Action workflow `.github/workflows/static.yml` automatically builds and deploys the static files to GitHub Pages.

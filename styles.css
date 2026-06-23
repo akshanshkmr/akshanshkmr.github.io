@@ -414,15 +414,17 @@ body {
 }
 .prompt-input::placeholder { color: var(--very-dim); }
 
-/* Quick Action HUD */
+/* Quick Action HUD — hidden on desktop (keyboard-driven), shown on mobile */
 .hud-panel {
-     display: flex;
+     display: none;
      align-items: center;
-     gap: 1.5ch;
-     margin-bottom: 6px;
-     padding: 2px 1ch;
+     gap: 1ch;
+     margin: 0 8px 4px 8px;
+     padding: 4px 1ch 0 1ch;
      font-size: 13px;
      flex-wrap: wrap;
+     flex-shrink: 0;
+     overflow-x: auto;
 }
 .hud-label {
      color: var(--dim);
@@ -465,6 +467,19 @@ body.theme-github-light .hud-btn:hover {
      background: rgba(9, 105, 218, 0.08);
      border-color: var(--accent);
      color: var(--accent);
+}
+
+/* ───────── AI chat follow-up suggestion chips ───────── */
+.chat-suggest {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 6px;
+     margin: 8px 0 4px 8px;
+     white-space: normal;
+}
+.chat-suggest .hud-btn {
+     font-size: 12px;
+     padding: 3px 9px;
 }
 
 /* ───────── status bar ───────── */
@@ -514,6 +529,9 @@ body.theme-github-light .hud-btn:hover {
      .statusbar { font-size: 12px; padding: 4px 8px 6px 8px; }
      /* Bigger tap target on the input */
      .prompt-input { font-size: 16px; } /* 16px prevents iOS zoom-on-focus */
+     /* Reveal tappable quick-action buttons */
+     .hud-panel { display: flex; }
+     .hud-btn { font-size: 13px; padding: 4px 10px; } /* larger touch targets */
 }
 
 /* Very small (≤380px): hide status bar to save space */

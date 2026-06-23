@@ -5,11 +5,44 @@
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Akshansh ✦ terminal portfolio</title>
           <meta name="description" content="Akshansh Kumar — Senior Software Engineer at D.E. Shaw. Type a slash command to explore." />
+          <meta name="author" content="Akshansh Kumar" />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://akshansh.codes/" />
           <meta property="og:title" content="akshansh.codes" />
-          <meta property="og:description" content="Senior SWE @ D.E. Shaw. Try /projects." />
-          <meta property="og:image" content="public/og-image.png" />
+          <meta property="og:description" content="Senior SWE @ D.E. Shaw. Type /resume, /theme, or just ask my AI persona anything." />
+          <meta property="og:image" content="https://akshansh.codes/public/og-image.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="akshansh.codes" />
+          <meta name="twitter:description" content="Senior SWE @ D.E. Shaw. Type /resume, /theme, or just ask my AI persona anything." />
+          <meta name="twitter:image" content="https://akshansh.codes/public/og-image.png" />
           <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text x='16' y='24' font-size='26' text-anchor='middle' fill='%234285F4'>✦<animate attributeName='opacity' values='1;0.3;1' dur='2s' repeatCount='indefinite'/></text></svg>" />
           <link rel="stylesheet" href="styles.css" />
+
+          <!-- Structured data: helps search engines surface this page for "Akshansh Kumar" -->
+          <script type="application/ld+json">
+          {
+               "@context": "https://schema.org",
+               "@type": "Person",
+               "name": "Akshansh Kumar",
+               "jobTitle": "Senior Software Engineer",
+               "worksFor": { "@type": "Organization", "name": "D. E. Shaw" },
+               "url": "https://akshansh.codes/",
+               "email": "mailto:akshanshkmr821@gmail.com",
+               "address": { "@type": "PostalAddress", "addressLocality": "Gurugram", "addressCountry": "India" },
+               "sameAs": [
+                    "https://linkedin.com/in/akshanshkmr",
+                    "https://github.com/akshanshkmr"
+               ]
+          }
+          </script>
+
+          <!-- Privacy-friendly analytics (no cookies). -->
+          <script
+               data-goatcounter="https://akshanshkmr.goatcounter.com/count"
+               async src="//gc.zgo.at/count.js"></script>
+
           <script>
                // GitHub Pages SPA fallback decoder — restores deep-link paths
                // routed through 404.html. See `404.html` for the encoder side.
@@ -28,6 +61,16 @@
      </head>
      <body>
           <main class="scroll" id="scroll" aria-live="polite"></main>
+
+          <!-- Quick actions: tappable command buttons (shown on mobile, where ↑↓/tab hints are useless) -->
+          <nav class="hud-panel" id="hud" aria-label="Quick actions">
+               <span class="hud-label">Try</span>
+               <button class="hud-btn" type="button" data-cmd="/resume">resume</button>
+               <button class="hud-btn" type="button" data-cmd="/help">help</button>
+               <button class="hud-btn" type="button" data-cmd="/theme">theme</button>
+               <button class="hud-btn" type="button" data-cmd="/contact">contact</button>
+               <button class="hud-btn" type="button" data-cmd="/snake">snake</button>
+          </nav>
 
           <div class="prompt-wrap" id="prompt-wrap">
                <div class="prompt-line top"><span class="corner">╭</span><span class="dashes-fill"></span><span class="corner">╮</span></div>

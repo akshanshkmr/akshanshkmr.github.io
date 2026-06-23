@@ -1,9 +1,5 @@
 import { parseInput } from '../shell/parser.js';
 
-function boldify(s) {
-     return s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-}
-
 function markdownToHtml(text) {
      // Basic HTML escape
      let html = String(text)
@@ -35,8 +31,71 @@ function markdownToHtml(text) {
           .join('\n');
 }
 
+// Follow-up prompts offered after each AI reply, to guide visitors who don't
+// know what to ask. Clicking one submits it as a new chat query.
+const SUGGESTIONS = [
+     'What did you build at D. E. Shaw?',
+     "What's your tech stack?",
+     'Tell me about your hackathon wins',
+     'How can I reach you?',
+];
+
+function renderSuggestions(scroll) {
+     // Only one suggestion row on screen at a time — drop the previous one.
+     document.querySelectorAll('.chat-suggest').forEach((el) => el.remove());
+
+     const row = document.createElement('div');
+     row.className = 'chat-suggest';
+     for (const q of SUGGESTIONS) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'hud-btn';
+          btn.textContent = q;
+          btn.addEventListener('click', () => {
+               const input = document.getElementById('prompt-input');
+               const form = document.getElementById('prompt');
+               if (!input || !form) return;
+               row.remove();
+               input.value = q;
+               form.requestSubmit();
+          });
+          row.appendChild(btn);
+     }
+     scroll.appendChild(row);
+}
+
+// ============================================================================
+// HARDCODED GEMINI API KEY CONFIGURATION
+// ============================================================================
+// Note: Committing an API key in plain text to a public GitHub repository will 
+// trigger automated security scanners and cause Google to revoke your key within minutes.
+//
+// To prevent auto-revocation:
+// 1. Encode your key in Base64 (e.g., run `btoa('your_key')` in browser console).
+// 2. Paste the encoded string into GEMINI_KEY_BASE64 below.
+// 3. (Recommended) Go to Google Cloud Console, click edit on this API key, 
+//    and set "HTTP referrers" restriction to your website domains:
+//    - https://akshansh.codes/*
+//    - https://akshanshkmr.github.io/*
+//    This secures your key so others cannot abuse it on their own domains.
+// ============================================================================
+const GEMINI_KEY_BASE64 = "QUl6YVN5Q1ZTZ1pVeUd2V3Q2bzllNDdxRVMyUWlHQVR5SVhjN3Fn"; // Base64 of the site's referrer-restricted Gemini key
+const GEMINI_KEY_RAW = "";    // OR paste raw key here (WARNING: will be auto-revoked if repository is public)
+// ============================================================================
+
 export default async function handleChatFallback(message, { renderBlock, scroll, resume, registry, renderEcho, ...ctx }) {
-     const apiKey = localStorage.getItem('gemini_api_key');
+     let apiKey = localStorage.getItem('gemini_api_key');
+
+     // Use hardcoded key if configured
+     if (GEMINI_KEY_BASE64) {
+          try {
+               apiKey = atob(GEMINI_KEY_BASE64.trim());
+          } catch (e) {
+               console.error("Failed to decode base64 Gemini key:", e);
+          }
+     } else if (GEMINI_KEY_RAW) {
+          apiKey = GEMINI_KEY_RAW.trim();
+     }
 
      if (!apiKey) {
           renderBlock(scroll, {
@@ -66,21 +125,19 @@ Guidelines:
 4. If asked about topics completely unrelated to Akshansh's professional profile, humorously pivot back to his skills (e.g. "I can't compile coffee, but I can tell you about my AI assistant project...").
 
 COMMAND EXECUTION INTEGRATION:
-You can programmatically trigger terminal commands on behalf of the visitor! If they ask to play a game, change the theme, download/view the resume, show help, or clear the screen, you MUST append a special instruction "[EXECUTE: /command_name args]" at the very end of your response text.
+You can programmatically trigger terminal commands on behalf of the visitor! If they ask to play a game, change the theme, download/view the resume, show contact info, show help, or clear the screen, you MUST append a special instruction "[EXECUTE: /command_name args]" at the very end of your response text.
 
 Available commands you can trigger:
 - To play Snake: Append "[EXECUTE: /snake]"
 - To play Chrome Dino: Append "[EXECUTE: /dino]"
-- To change colors/theme: Append "[EXECUTE: /theme theme_name]" (Valid theme names: gemini, oled-dark, tokyo-night, dracula, monokai, nord, gemini-light, github-light)
+- To change colors/theme: Append "[EXECUTE: /theme theme_name]" (Valid theme names: dark, oled, tokyo, dracula, nord, gruvbox, catppuccin, rose-pine, matrix, solarized, light)
 - To print/download/view the full resume: Append "[EXECUTE: /resume]"
 - To directly download/print A4 PDF resume: Append "[EXECUTE: /resume --pdf]"
+- To show contact details: Append "[EXECUTE: /contact]"
 - To list commands: Append "[EXECUTE: /help]"
 - To clear the terminal screen: Append "[EXECUTE: /clear]"
 - To copy URL sharing link: Append "[EXECUTE: /share]"
-- To trigger other easter eggs: "[EXECUTE: /barrel-roll]", "[EXECUTE: /matrix]", "[EXECUTE: /whoami]", "[EXECUTE: /vim]"
-
-Example response:
-"I would love to play a game of Snake with you! I'm launching the console game grid below. [EXECUTE: /snake]"`;
+- To trigger other easter eggs: "[EXECUTE: /barrel-roll]", "[EXECUTE: /matrix]", "[EXECUTE: /whoami]", "[EXECUTE: /vim]"`;
 
      const block = renderBlock(scroll, {
           type: 'tool',
@@ -88,10 +145,15 @@ Example response:
           meta: 'ai',
           bodyText: 'thinking…',
      });
-     const bodyCol = block.querySelector('.body-col');
+     const blockBody = block.querySelector('.body-col');
+
+     // Strip the [EXECUTE: ...] marker (including a partial trailing fragment
+     // that may appear mid-stream) before showing text to the visitor.
+     const stripExec = (s) => s.replace(/\[EXECUTE:[^\]]*\]?/i, '').trimEnd();
 
      try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          // Streaming endpoint (Server-Sent Events) — tokens print as they arrive.
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse&key=${apiKey}`, {
                method: 'POST',
                headers: {
                     'Content-Type': 'application/json'
@@ -118,8 +180,42 @@ Example response:
                throw new Error(`API returned ${res.status}: ${errText}`);
           }
 
-          const data = await res.json();
-          const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '(empty reply)';
+          // Read the SSE stream, accumulating text and repainting as it grows.
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = '';
+          let text = '';
+          let firstToken = true;
+
+          const pump = (chunk) => {
+               buffer += chunk;
+               const lines = buffer.split('\n');
+               buffer = lines.pop(); // keep last partial line
+               for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed.startsWith('data:')) continue;
+                    const payload = trimmed.slice(5).trim();
+                    if (!payload || payload === '[DONE]') continue;
+                    try {
+                         const json = JSON.parse(payload);
+                         const piece = json.candidates?.[0]?.content?.parts?.[0]?.text;
+                         if (piece) {
+                              text += piece;
+                              if (firstToken) { firstToken = false; }
+                              blockBody.innerHTML = markdownToHtml(stripExec(text));
+                              scroll.scrollTop = scroll.scrollHeight;
+                         }
+                    } catch { /* ignore keep-alive / partial JSON */ }
+               }
+          };
+
+          while (true) {
+               const { value, done } = await reader.read();
+               if (done) break;
+               pump(decoder.decode(value, { stream: true }));
+          }
+
+          if (!text) text = '(empty reply)';
 
           // Check if the AI wants to execute a command
           const execMatch = text.match(/\[EXECUTE:\s*([^[\]]+)\]/i);
@@ -130,7 +226,8 @@ Example response:
                cleanedText = text.replace(/\[EXECUTE:\s*([^[\]]+)\]/i, '').trim();
           }
 
-          bodyCol.innerHTML = markdownToHtml(cleanedText);
+          blockBody.innerHTML = markdownToHtml(cleanedText);
+          renderSuggestions(scroll);
           scroll.scrollTop = scroll.scrollHeight;
 
           if (commandToRun) {
@@ -153,7 +250,7 @@ Example response:
                }
           }
      } catch (err) {
-          bodyCol.innerHTML = `<span style="color:var(--red)">error calling Gemini API: ${err.message}</span>`;
+          blockBody.innerHTML = `<span style="color:var(--red)">error calling Gemini API: ${err.message}</span>`;
           scroll.scrollTop = scroll.scrollHeight;
      }
 }

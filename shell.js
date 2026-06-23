@@ -27,6 +27,7 @@ import dino from "./commands/eggs/dino.js";
 import barrelRoll from "./commands/eggs/barrel-roll.js";
 import handleChatFallback from "./commands/chat.js";
 import key from "./commands/key.js";
+import contact from "./commands/contact.js";
 
 async function loadResume() {
   const res = await fetch("./resume.md", { cache: "no-store" });
@@ -51,6 +52,7 @@ function buildRegistry() {
     dino,
     barrelRoll,
     key,
+    contact,
   ]) {
     r.register(cmd);
   }
@@ -270,6 +272,20 @@ async function main() {
     }
   });
 
+  // Quick-action HUD: tappable buttons that run a command (mobile)
+  const hud = document.getElementById("hud");
+  if (hud) {
+    hud.addEventListener("click", (e) => {
+      const btn = e.target.closest(".hud-btn");
+      if (!btn) return;
+      const cmd = btn.dataset.cmd;
+      if (!cmd) return;
+      input.value = cmd;
+      ghostText.textContent = "";
+      promptForm.requestSubmit();
+    });
+  }
+
   document.addEventListener("click", (e) => {
     if (
       e.target.closest(
@@ -280,6 +296,31 @@ async function main() {
     input.focus();
   });
   input.focus();
+
+  // First-visit demo: auto-type /help once so newcomers see the terminal react.
+  maybeRunFirstVisitDemo();
+
+  function maybeRunFirstVisitDemo() {
+    if (localStorage.getItem("visited")) return;
+    localStorage.setItem("visited", "1");
+    if (initial.name !== "help") return; // a deep link already ran a command
+    const demo = "/help";
+    let i = 0;
+    function typeNext() {
+      if (input.value !== demo.slice(0, i)) return; // user started typing — abort
+      if (i < demo.length) {
+        input.value = demo.slice(0, i + 1);
+        i++;
+        updateAutosuggest();
+        setTimeout(typeNext, 110);
+      } else {
+        setTimeout(() => {
+          if (input.value === demo) promptForm.requestSubmit();
+        }, 450);
+      }
+    }
+    setTimeout(typeNext, 650);
+  }
 
   async function dispatch(parsed) {
     const result = await registry.dispatch(parsed, ctx);

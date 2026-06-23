@@ -1,5 +1,6 @@
 const ITEMS = [
      ['/resume', 'explore Akshansh\'s resume (interactive menu)'],
+     ['/contact', 'ways to get in touch'],
      ['/theme', 'change terminal color theme (interactive menu)'],
      ['/key', 'configure Gemini API key for AI chat'],
      ['/share', 'copy current URL to clipboard'],
