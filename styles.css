@@ -437,30 +437,20 @@ body {
 }
 .hud-btn {
      background: transparent;
-     border: 1px solid var(--very-dim);
-     border-radius: 2px;
+     border: none;
      color: var(--cyan);
      font-family: var(--font-mono);
      font-size: 13px;
-     padding: 4px 9px;
+     padding: 4px 3px;
      flex: 0 0 auto;
      cursor: pointer;
-     transition: background 0.12s, border-color 0.12s, color 0.12s;
+     transition: color 0.12s;
      -webkit-tap-highlight-color: transparent;
      touch-action: manipulation;   /* no 300ms tap delay */
      user-select: none;
 }
-.hud-btn:hover {
-     background: var(--selection);
-     border-color: var(--accent);
-     color: var(--text);
-}
-.hud-btn:active {
-     background: var(--selection);
-     border-color: var(--accent);
-     color: var(--text);
-     transform: scale(0.97);
-}
+.hud-btn:hover { color: var(--text); }
+.hud-btn:active { color: var(--accent); }
 
 /* ───────── AI chat follow-up suggestions ─────────
         A selectable menu of `›`-prefixed prompts, in the same TUI idiom as
@@ -552,9 +542,9 @@ body {
      .statusbar { font-size: 12px; padding: 4px 8px 6px 8px; }
      /* Bigger tap target on the input */
      .prompt-input { font-size: 16px; } /* 16px prevents iOS zoom-on-focus */
-     /* Reveal tappable quick-action buttons */
+     /* Reveal tappable quick-action commands */
      .hud-panel { display: flex; }
-     .hud-btn { font-size: 13px; padding: 4px 10px; } /* larger touch targets */
+     .hud-btn { padding: 5px 4px; } /* taller tap target */
 }
 
 /* Very small (≤380px): hide status bar to save space */
