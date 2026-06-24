@@ -414,72 +414,95 @@ body {
 }
 .prompt-input::placeholder { color: var(--very-dim); }
 
-/* Quick Action HUD — hidden on desktop (keyboard-driven), shown on mobile */
+/* Quick Action HUD — hidden on desktop (keyboard-driven), shown on mobile.
+        Styled as flat command tokens led by a `>` prompt, like a typed line. */
 .hud-panel {
      display: none;
      align-items: center;
-     gap: 1ch;
+     gap: 0.75ch;
      margin: 0 8px 4px 8px;
      padding: 4px 1ch 0 1ch;
      font-size: 13px;
-     flex-wrap: wrap;
+     flex-wrap: nowrap;
      flex-shrink: 0;
      overflow-x: auto;
+     scrollbar-width: none;            /* keep the row clean while scrollable */
 }
+.hud-panel::-webkit-scrollbar { display: none; }
 .hud-label {
-     color: var(--dim);
-     text-transform: uppercase;
-     font-size: 11px;
-     letter-spacing: 0.05em;
-     font-weight: bold;
+     color: var(--accent);
+     font-family: var(--font-mono);
+     font-size: 13px;
+     flex: 0 0 auto;
 }
 .hud-btn {
-     background: rgba(255, 255, 255, 0.03);
+     background: transparent;
      border: 1px solid var(--very-dim);
-     border-radius: 3px;
+     border-radius: 2px;
      color: var(--cyan);
      font-family: var(--font-mono);
-     font-size: 12px;
-     padding: 2px 8px;
+     font-size: 13px;
+     padding: 4px 9px;
+     flex: 0 0 auto;
      cursor: pointer;
-     transition: background 0.15s, border-color 0.15s, color 0.15s;
+     transition: background 0.12s, border-color 0.12s, color 0.12s;
      -webkit-tap-highlight-color: transparent;
      touch-action: manipulation;   /* no 300ms tap delay */
      user-select: none;
 }
 .hud-btn:hover {
-     background: rgba(125, 207, 255, 0.1);
-     border-color: var(--cyan);
+     background: var(--selection);
+     border-color: var(--accent);
      color: var(--text);
 }
 .hud-btn:active {
-     background: rgba(125, 207, 255, 0.2);
-     border-color: var(--cyan);
-     color: #fff;
-     transform: scale(0.96);
-}
-
-body.theme-github-light .hud-btn {
-     background: rgba(0, 0, 0, 0.02);
-     border-color: var(--very-dim);
-}
-body.theme-github-light .hud-btn:hover {
-     background: rgba(9, 105, 218, 0.08);
+     background: var(--selection);
      border-color: var(--accent);
-     color: var(--accent);
+     color: var(--text);
+     transform: scale(0.97);
 }
 
-/* ───────── AI chat follow-up suggestion chips ───────── */
+/* ───────── AI chat follow-up suggestions ─────────
+        A selectable menu of `›`-prefixed prompts, in the same TUI idiom as
+        the /resume and /theme menus. */
 .chat-suggest {
      display: flex;
-     flex-wrap: wrap;
-     gap: 6px;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 1px;
      margin: 8px 0 4px 8px;
      white-space: normal;
 }
-.chat-suggest .hud-btn {
-     font-size: 12px;
-     padding: 3px 9px;
+.chat-suggest-label {
+     color: var(--dim);
+     font-size: 11px;
+     letter-spacing: 0.04em;
+     margin-bottom: 3px;
+}
+.suggest-line {
+     display: block;
+     max-width: 100%;
+     text-align: left;
+     background: transparent;
+     border: none;
+     border-radius: 2px;
+     color: var(--cyan);
+     font-family: var(--font-mono);
+     font-size: 13px;
+     line-height: 1.45;
+     padding: 3px 7px;
+     cursor: pointer;
+     transition: background 0.12s, color 0.12s;
+     -webkit-tap-highlight-color: transparent;
+}
+.suggest-line .suggest-arrow {
+     color: var(--accent);
+     margin-right: 7px;
+}
+.suggest-line:hover,
+.suggest-line:active {
+     background: var(--selection);
+     color: var(--text);
 }
 
 /* ───────── status bar ───────── */

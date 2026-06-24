@@ -46,11 +46,18 @@ function renderSuggestions(scroll) {
 
      const row = document.createElement('div');
      row.className = 'chat-suggest';
+
+     const label = document.createElement('span');
+     label.className = 'chat-suggest-label';
+     label.textContent = 'suggested';
+     row.appendChild(label);
+
      for (const q of SUGGESTIONS) {
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'hud-btn';
-          btn.textContent = q;
+          btn.className = 'suggest-line';
+          btn.innerHTML = `<span class="suggest-arrow" aria-hidden="true">›</span>`;
+          btn.append(q);
           btn.addEventListener('click', () => {
                const input = document.getElementById('prompt-input');
                const form = document.getElementById('prompt');
