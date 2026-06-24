@@ -28,6 +28,7 @@ import barrelRoll from "./commands/eggs/barrel-roll.js";
 import handleChatFallback from "./commands/chat.js";
 import key from "./commands/key.js";
 import contact from "./commands/contact.js";
+import stats, { fetchTotals } from "./commands/stats.js";
 
 async function loadResume() {
   const res = await fetch("./resume.md", { cache: "no-store" });
@@ -53,6 +54,7 @@ function buildRegistry() {
     barrelRoll,
     key,
     contact,
+    stats,
   ]) {
     r.register(cmd);
   }
@@ -296,6 +298,14 @@ async function main() {
     input.focus();
   });
   input.focus();
+
+  // Populate the status-bar visitor count (fail-silent; leaves "online" on error).
+  fetchTotals()
+    .then(({ count }) => {
+      const el = document.getElementById("visit-count");
+      if (el && count != null) el.textContent = `${count} views`;
+    })
+    .catch(() => {});
 
   // First-visit demo: auto-type /help once so newcomers see the terminal react.
   maybeRunFirstVisitDemo();

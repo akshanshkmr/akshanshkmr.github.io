@@ -4,6 +4,7 @@ const ITEMS = [
      ['/theme', 'change terminal color theme (interactive menu)'],
      ['/key', 'configure Gemini API key for AI chat'],
      ['/share', 'copy current URL to clipboard'],
+     ['/stats', 'show visitor stats for this site'],
      ['/clear', 'wipe the scroll buffer'],
      ['/snake', 'play snake in the console'],
      ['/help', 'list available commands'],
