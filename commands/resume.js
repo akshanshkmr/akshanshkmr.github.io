@@ -141,19 +141,19 @@ export default {
           const bodyCol = block.querySelector(".body-col");
 
           function paint() {
-               const menuText = OPTIONS.map((opt, idx) => {
-                    if (idx === selectedIdx) {
-                         return `<span style="color:var(--accent);font-weight:bold">▶ ${opt}</span>`;
-                    }
-                    return `  <span style="color:var(--dim)">${opt}</span>`;
-               }).join('\n');
-               bodyCol.innerHTML = `How would you like to view the resume?\n\n${menuText}\n\n<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
-               
+               const items = OPTIONS.map((opt, idx) =>
+                    `<button class="suggest-line${idx === selectedIdx ? ' sel' : ''}" data-idx="${idx}"><span class="suggest-arrow" aria-hidden="true">›</span>${opt}</button>`,
+               ).join('');
+               bodyCol.innerHTML =
+                    `How would you like to view the resume?\n` +
+                    `<div class="tui-menu">${items}</div>\n` +
+                    `<span style="color:var(--dim)">[↑/↓ or tap · Enter to select · Esc to cancel]</span>`;
                scroll.scrollTop = scroll.scrollHeight;
           }
 
           function cleanup() {
                window.removeEventListener('keydown', onKey, true);
+               bodyCol.removeEventListener('click', onMenuClick);
                input.readOnly = false;
                setTimeout(() => {
                     input.focus();
@@ -161,8 +161,35 @@ export default {
                resolve();
           }
 
-          async function onKey(e) {
-               if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          function activate(idx) {
+               if (idx === 0) {
+                    const html = renderResumeTerminal(parsed);
+                    bodyCol.innerHTML = `${html}<div style="margin-top:12px;color:var(--dim);font-size:12px">try <span style="color:var(--accent)">/resume --pdf</span> to download an ATS-friendly PDF directly</div>`;
+                    scroll.scrollTop = scroll.scrollHeight;
+                    cleanup();
+               } else {
+                    bodyCol.innerHTML = `opening print dialog…`;
+                    scroll.scrollTop = scroll.scrollHeight;
+                    cleanup();
+                    pdf(parsed);
+               }
+          }
+
+          function onMenuClick(e) {
+               const item = e.target.closest('.suggest-line');
+               if (!item) return;
+               e.preventDefault();
+               e.stopPropagation();
+               activate(parseInt(item.dataset.idx, 10));
+          }
+
+          function onKey(e) {
+               if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    selectedIdx = (selectedIdx - 1 + OPTIONS.length) % OPTIONS.length;
+                    paint();
+               } else if (e.key === 'ArrowDown') {
                     e.preventDefault();
                     e.stopPropagation();
                     selectedIdx = (selectedIdx + 1) % OPTIONS.length;
@@ -170,18 +197,7 @@ export default {
                } else if (e.key === 'Enter') {
                     e.preventDefault();
                     e.stopPropagation();
-                    
-                    if (selectedIdx === 0) {
-                         const html = renderResumeTerminal(parsed);
-                         bodyCol.innerHTML = `${html}<div style="margin-top:12px;color:var(--dim);font-size:12px">try <span style="color:var(--accent)">/resume --pdf</span> to download an ATS-friendly PDF directly</div>`;
-                         scroll.scrollTop = scroll.scrollHeight;
-                         cleanup();
-                    } else {
-                         bodyCol.innerHTML = `opening print dialog…`;
-                         scroll.scrollTop = scroll.scrollHeight;
-                         cleanup();
-                         await pdf(parsed);
-                    }
+                    activate(selectedIdx);
                } else if (e.key === 'Escape' || (e.key === 'c' && e.ctrlKey)) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -191,6 +207,7 @@ export default {
                }
           }
 
+          bodyCol.addEventListener('click', onMenuClick);
           window.addEventListener('keydown', onKey, true);
           paint();
      }),

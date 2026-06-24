@@ -95,23 +95,20 @@ export default {
                     ? '<span style="color:var(--ok)">configured</span> (stored safely in your browser)' 
                     : '<span style="color:var(--red)">not configured</span>';
 
-               const menuText = options.map((opt, idx) => {
-                    if (idx === selectedIdx) {
-                         return `<span class="key-menu-item active" data-idx="${idx}" style="color:var(--accent);font-weight:bold;cursor:pointer;display:block;padding:4px 0;">▶ ${opt}</span>`;
-                    }
-                    return `<span class="key-menu-item" data-idx="${idx}" style="color:var(--dim);cursor:pointer;display:block;padding:4px 0;">  ${opt}</span>`;
-               }).join('\n');
+               const items = options.map((opt, idx) =>
+                    `<button class="suggest-line${idx === selectedIdx ? ' sel' : ''}" data-idx="${idx}"><span class="suggest-arrow" aria-hidden="true">›</span>${opt}</button>`,
+               ).join('');
 
                bodyCol.innerHTML = `Current Status: ${status}\n\n` +
-                                   `Get a free key from Google AI Studio: <a href="https://aistudio.google.com/" target="_blank" style="color:var(--cyan);text-decoration:underline;">aistudio.google.com</a>\n\n` +
-                                   `<div class="key-menu-wrap">${menuText}</div>\n\n` +
-                                   `<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
-               
+                                   `Get a free key from Google AI Studio: <a href="https://aistudio.google.com/" target="_blank" style="color:var(--cyan);text-decoration:underline;">aistudio.google.com</a>\n` +
+                                   `<div class="tui-menu">${items}</div>\n` +
+                                   `<span style="color:var(--dim)">[↑/↓ or tap · Enter to select · Esc to cancel]</span>`;
+
                scroll.scrollTop = scroll.scrollHeight;
           }
 
           function onMenuClick(e) {
-               const item = e.target.closest('.key-menu-item');
+               const item = e.target.closest('.suggest-line');
                if (!item) return;
                e.preventDefault();
                e.stopPropagation();

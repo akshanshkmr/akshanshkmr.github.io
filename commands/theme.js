@@ -56,20 +56,17 @@ export default {
           }
 
           function paint() {
-               const menuText = THEMES.map((t, idx) => {
-                    if (idx === selectedIdx) {
-                         return `<span class="theme-menu-item active" data-idx="${idx}" style="color:var(--accent);font-weight:bold;cursor:pointer;display:block;padding:4px 0;">▶ ${t}</span>`;
-                    }
-                    return `<span class="theme-menu-item" data-idx="${idx}" style="color:var(--dim);cursor:pointer;display:block;padding:4px 0;">  ${t}</span>`;
-               }).join('\n');
-               bodyCol.innerHTML = `Select terminal theme:\n\n<div class="theme-menu-wrap">${menuText}</div>\n\n<span style="color:var(--dim)">[Use ↑/↓ to navigate, Enter to select, Esc to cancel]</span>`;
-               
+               const items = THEMES.map((t, idx) =>
+                    `<button class="suggest-line${idx === selectedIdx ? ' sel' : ''}" data-idx="${idx}"><span class="suggest-arrow" aria-hidden="true">›</span>${t}</button>`,
+               ).join('');
+               bodyCol.innerHTML = `Select terminal theme:\n<div class="tui-menu">${items}</div>\n<span style="color:var(--dim)">[↑/↓ or tap · Enter to select · Esc to cancel]</span>`;
+
                // Keep scrolling aligned as selection updates
                scroll.scrollTop = scroll.scrollHeight;
           }
 
           function onMenuClick(e) {
-               const item = e.target.closest('.theme-menu-item');
+               const item = e.target.closest('.suggest-line');
                if (!item) return;
                e.preventDefault();
                e.stopPropagation();

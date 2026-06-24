@@ -490,9 +490,19 @@ body {
      margin-right: 7px;
 }
 .suggest-line:hover,
-.suggest-line:active {
+.suggest-line:active,
+.suggest-line.sel {
      background: var(--selection);
      color: var(--text);
+}
+
+/* Interactive command menus (/resume, /theme, /key) reuse the suggestion line. */
+.tui-menu {
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 1px;
+     margin: 6px 0;
 }
 
 /* ───────── status bar ───────── */
