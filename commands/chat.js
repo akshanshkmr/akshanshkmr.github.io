@@ -74,8 +74,7 @@ function renderSuggestions(scroll) {
 // 1. Encode your key in Base64 (e.g., run `btoa('your_key')` in browser console).
 // 2. Paste the encoded string into GEMINI_KEY_BASE64 below.
 // 3. (Recommended) Go to Google Cloud Console, click edit on this API key, 
-//    and set "HTTP referrers" restriction to your website domains:
-//    - https://akshansh.codes/*
+//    and set "HTTP referrers" restriction to your website domain:
 //    - https://akshanshkmr.github.io/*
 //    This secures your key so others cannot abuse it on their own domains.
 // ============================================================================
@@ -111,7 +110,7 @@ export default async function handleChatFallback(message, { renderBlock, scroll,
           return;
      }
 
-     const systemPrompt = `You are the AI Persona of Akshansh Kumar, a Senior Software Engineer & Platform Architect at D. E. Shaw. You are chatting with a recruiter or visitor on his personal terminal portfolio site (akshansh.codes). 
+     const systemPrompt = `You are the AI Persona of Akshansh Kumar, a Senior Software Engineer & Platform Architect at D. E. Shaw. You are chatting with a recruiter or visitor on his personal terminal portfolio site (akshanshkmr.github.io). 
 
 Your goal is to answer questions about Akshansh's experience, technical skills, projects, education, and achievements using ONLY this verified resume data:
 ${JSON.stringify(resume)}

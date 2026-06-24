@@ -22,7 +22,7 @@
   <circle cx="112" cy="112" r="7" fill="#EA4335"/>
   <circle cx="138" cy="112" r="7" fill="#fabd2f"/>
   <circle cx="164" cy="112" r="7" fill="#34A853"/>
-  <text x="600" y="117" font-family="'IBM Plex Mono','JetBrains Mono',monospace" font-size="16" fill="#54566e" text-anchor="middle">akshansh.codes</text>
+  <text x="600" y="117" font-family="'IBM Plex Mono','JetBrains Mono',monospace" font-size="16" fill="#54566e" text-anchor="middle">akshanshkmr.github.io</text>
 
   <!-- prompt + name -->
   <text x="120" y="225" font-family="'IBM Plex Mono','JetBrains Mono',monospace" font-size="22" fill="#4285F4">&gt;_</text>
