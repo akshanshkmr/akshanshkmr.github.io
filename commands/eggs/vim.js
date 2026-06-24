@@ -7,7 +7,7 @@ const SCREEN_LINES = [
      '~',
      '~     press : to enter command mode, then :q! and Enter to escape',
      '~',
-     '~',
+     '~     (on a touch screen? just tap anywhere to escape)',
 ];
 
 const QUIT_COMMANDS = new Set(['q', 'q!', 'wq', 'wq!', 'x', 'qa', 'qa!']);
@@ -145,7 +145,14 @@ export default {
                }
           }
 
+          // Touch devices can't type `:q!`, so let a tap escape the trap.
+          function onTouch(e) {
+               e.preventDefault();
+               close();
+          }
+
           window.addEventListener('keydown', onKey, true);
+          modal.addEventListener('touchstart', onTouch, { passive: false });
           paint();
      }),
 };

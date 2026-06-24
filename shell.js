@@ -107,7 +107,7 @@ function renderInitial(scroll) {
     `<span style="color:var(--text)">Tips for getting started:</span>`,
     `${dim('1.')} ${accent('/help')}    ${dim('for a list of all commands.')}`,
     `${dim('2.')} ${accent('/resume')}  ${dim('explore my background & print a PDF.')}`,
-    `${dim('3.')} ${accent('/key')}     ${dim('set up AI chat, then ask me anything.')}`,
+    `${dim('3.')} ${dim('or just')} ${accent('type a question')} ${dim('to chat with my AI persona.')}`,
   ].join('\n');
   scroll.appendChild(tipsEl);
 }
@@ -203,35 +203,14 @@ async function main() {
       if (cmdName === "chat") {
         let query = trimmed.slice(5).trim();
         if (query.startsWith("/")) query = query.slice(1).trim();
-        
-        const apiKey = localStorage.getItem('gemini_api_key');
-        if (!apiKey) {
-          renderBlock(scroll, {
-            type: 'error',
-            header: 'chat',
-            meta: 'key missing',
-            bodyText: 'Gemini API Key is not configured. Redirecting to interactive key setup…',
-          });
-          await registry.dispatch({ name: 'key', args: [] }, ctx);
-        } else {
-          await handleChatFallback(query || "hello", ctx);
-        }
+        await handleChatFallback(query || "hello", ctx);
       } else {
         await dispatch(parsed);
       }
     } else {
-      const apiKey = localStorage.getItem('gemini_api_key');
-      if (!apiKey) {
-        renderBlock(scroll, {
-          type: 'error',
-          header: 'chat',
-          meta: 'key missing',
-          bodyText: 'Gemini API Key is not configured. Redirecting to interactive key setup…',
-        });
-        await registry.dispatch({ name: 'key', args: [] }, ctx);
-      } else {
-        await handleChatFallback(trimmed, ctx);
-      }
+      // Any non-command text is a chat question. handleChatFallback supplies
+      // the site's hardcoded key (or prompts for one if none is configured).
+      await handleChatFallback(trimmed, ctx);
     }
   });
 

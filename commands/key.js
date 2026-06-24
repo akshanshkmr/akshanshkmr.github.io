@@ -200,7 +200,7 @@ export default {
                          
                          const pastedKey = input.value.trim();
                          input.value = '';
-                         input.placeholder = 'Try /resume, /theme, /key, /snake';
+                         input.placeholder = 'Try /resume, /theme, or ask me anything';
                          input.type = 'text';
                          
                          window.removeEventListener('keydown', onKeyInput, true);
@@ -239,7 +239,7 @@ export default {
                          e.stopPropagation();
                          
                          input.value = '';
-                         input.placeholder = 'Try /resume, /theme, /key, /snake';
+                         input.placeholder = 'Try /resume, /theme, or ask me anything';
                          input.type = 'text';
                          
                          window.removeEventListener('keydown', onKeyInput, true);

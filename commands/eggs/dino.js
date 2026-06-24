@@ -45,34 +45,46 @@ export default {
                const header = `<span style="color:var(--accent);font-weight:bold">🦖 CHROMIUM DINO RUNNER 🌵</span>`;
                const scoreLine = `<span style="color:var(--cyan);font-weight:bold">Score: ${String(score).padStart(3, '0')}</span>`;
                
-               bodyCol.innerHTML = `${header}  ·  ${scoreLine}\n\n${airLine}\n${groundLine}\n\n<span style="color:var(--dim)">[Press Space to Jump, Esc to Exit]</span>`;
+               bodyCol.innerHTML = `${header}  ·  ${scoreLine}\n\n${airLine}\n${groundLine}\n\n<span style="color:var(--dim)">[Space/tap to jump · Esc to exit]</span>`;
                scroll.scrollTop = scroll.scrollHeight;
           }
 
           function gameOver() {
                clearInterval(gameInterval);
                window.removeEventListener('keydown', onKey, true);
-               
+               bodyCol.removeEventListener('touchstart', onTouch);
+
                const header = `<span style="color:var(--red);font-weight:bold">🦖 GAME OVER! 🌵</span>`;
                const scoreLine = `<span style="color:var(--cyan);font-weight:bold">Final Score: ${score}</span>`;
-               bodyCol.innerHTML = `${header}  ·  ${scoreLine}\n\nPress enter or escape to return.`;
-               
+               bodyCol.innerHTML = `${header}  ·  ${scoreLine}\n\nPress enter/escape or tap to return.`;
+
+               function done() {
+                    window.removeEventListener('keydown', restoreKey, true);
+                    bodyCol.removeEventListener('touchstart', restoreTouch);
+                    input.readOnly = false;
+                    input.focus();
+                    resolve();
+               }
                function restoreKey(e) {
                     if (e.key === 'Enter' || e.key === 'Escape') {
                          e.preventDefault();
                          e.stopPropagation();
-                         window.removeEventListener('keydown', restoreKey, true);
-                         input.readOnly = false;
-                         input.focus();
-                         resolve();
+                         done();
                     }
                }
+               function restoreTouch(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    done();
+               }
                window.addEventListener('keydown', restoreKey, true);
+               bodyCol.addEventListener('touchstart', restoreTouch, { passive: false });
           }
 
           function cleanup() {
                clearInterval(gameInterval);
                window.removeEventListener('keydown', onKey, true);
+               bodyCol.removeEventListener('touchstart', onTouch);
                input.readOnly = false;
                setTimeout(() => {
                     input.focus();
@@ -130,9 +142,20 @@ export default {
                }
           }
 
+          function onTouch(e) {
+               e.preventDefault();
+               e.stopPropagation();
+               if (dinoY === 0) {
+                    dinoY = 1;
+                    jumpTicks = 0;
+                    paint();
+               }
+          }
+
           window.addEventListener('keydown', onKey, true);
+          bodyCol.addEventListener('touchstart', onTouch, { passive: false });
           paint();
-          
+
           gameInterval = setInterval(update, 100); // 100ms ticks
      }),
 };

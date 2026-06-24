@@ -120,12 +120,13 @@ export default {
           let paused = false;
           let speed = INITIAL_SPEED_MS;
           let timer;
+          let touchStart = null;
 
           function paint() {
                gridEl.innerHTML = render(game);
                metaEl.textContent = paused
                     ? `(score ${game.score} · paused — p to resume)`
-                    : `(score ${game.score} · ↑↓←→ · p · q)`;
+                    : `(score ${game.score} · ↑↓←→ / swipe · p · q)`;
                scroll.scrollTop = scroll.scrollHeight;
           }
 
@@ -167,15 +168,40 @@ export default {
                }
           }
 
+          // Swipe to steer on touch devices.
+          function onTouchStart(e) {
+               if (e.touches.length) touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          }
+          function onTouchMove(e) {
+               if (touchStart) e.preventDefault(); // don't scroll the page while steering
+          }
+          function onTouchEnd(e) {
+               if (!touchStart) return;
+               const t = e.changedTouches[0];
+               const dx = t.clientX - touchStart.x;
+               const dy = t.clientY - touchStart.y;
+               touchStart = null;
+               if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return; // ignore taps
+               game.pendingDir = Math.abs(dx) > Math.abs(dy)
+                    ? { x: dx > 0 ? 1 : -1, y: 0 }
+                    : { x: 0, y: dy > 0 ? 1 : -1 };
+          }
+
           function cleanup() {
                clearInterval(timer);
                window.removeEventListener('keydown', onKey, true);
+               gridEl.removeEventListener('touchstart', onTouchStart);
+               gridEl.removeEventListener('touchmove', onTouchMove);
+               gridEl.removeEventListener('touchend', onTouchEnd);
                setTimeout(() => {
                     input.focus();
                }, 50);
           }
 
           window.addEventListener('keydown', onKey, true);
+          gridEl.addEventListener('touchstart', onTouchStart, { passive: true });
+          gridEl.addEventListener('touchmove', onTouchMove, { passive: false });
+          gridEl.addEventListener('touchend', onTouchEnd, { passive: true });
           paint();
           timer = setInterval(step, speed);
      }),
